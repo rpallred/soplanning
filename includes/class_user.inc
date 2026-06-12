@@ -75,11 +75,11 @@ class User extends GObject
 		$sujet = CONFIG_SOPLANNING_TITLE . ' - ' . $smarty->getConfigVars('mail_sujet_changerPwd');
 		if (CONFIG_SOPLANNING_URL != '')
 		{
-			$smarty->assign('lien', CONFIG_SOPLANNING_URL . '/change_password?user_id=' . $this->user_id . '&date=' . date('Y-m-d') . '&hash=' . md5($this->user_id . '--' . date('Y-m-d') . '--' . $this->cle));
+			$smarty->assign('lien', CONFIG_SOPLANNING_URL . '/change_password?user_id=' . $this->user_id . '&date=' . date('Y-m-d') . '&hash=' . hash_hmac('sha256', $this->user_id . '|' . date('Y-m-d'), $this->cle));
 		}else 
 		{
 			$urlSuggeree = getUrlInfo();
-			$smarty->assign('lien', $urlSuggeree['root'] . substr($urlSuggeree['currentDir'], 0, strlen($urlSuggeree['currentDir'])-8) . 'change_password?user_id=' . $this->user_id . '&date=' . date('Y-m-d') . '&hash=' . md5($this->user_id . 'ï--' . date('Y-m-d') . 'ï--' . $this->cle));
+			$smarty->assign('lien', $urlSuggeree['root'] . substr($urlSuggeree['currentDir'], 0, strlen($urlSuggeree['currentDir'])-8) . 'change_password?user_id=' . $this->user_id . '&date=' . date('Y-m-d') . '&hash=' . hash_hmac('sha256', $this->user_id . '|' . date('Y-m-d'), $this->cle));
 		}
 		$corps = $smarty->getHtml('mail_changer_pwd.tpl');
 		$mail = new Mailer($this->email, $sujet, $corps);
