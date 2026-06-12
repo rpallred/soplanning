@@ -109,11 +109,11 @@ class Version
 			return 'database_config_file_failed';
 		}
 
-		$reqs = explode(";",$requetes);// on sépare les requetes
+		$reqs = explode(";",$requetes);// on sï¿½pare les requetes
 		foreach($reqs as $req){
 			if (trim($req) != "" && !db_query($req)){
 				if(strpos(mysqli_error($cfgConnection), "already exists") !== FALSE) {
-					// si base de donnes deja existante, on lance pas d'erreur et on passe à  la mise à jour du fichier de DB
+					// si base de donnes deja existante, on lance pas d'erreur et on passe ï¿½  la mise ï¿½ jour du fichier de DB
 					break;
 				} else {
 					return 'database_init_failed';
@@ -195,7 +195,7 @@ class Version
 						$requetes .= $l;
 					}
 				}
-				$reqs = explode(";",$requetes);// on sépare les requetes
+				$reqs = explode(";",$requetes);// on sï¿½pare les requetes
 				foreach($reqs as $req){	// et on les execute
 					//echo '<br>' . $req . '<br>';
 
@@ -217,7 +217,7 @@ class Version
 		}
 
 		if (!$upgradeSqlTrouve) {
-			// si aucune MAJ trouvee, on met juste à jour l'info de la version courante
+			// si aucune MAJ trouvee, on met juste ï¿½ jour l'info de la version courante
 			$config = new Config();
 			$config->db_load(array('cle', '=', 'CURRENT_VERSION'));
 			$config->cle = 'CURRENT_VERSION';
@@ -230,9 +230,14 @@ class Version
 	}
 
 	public function checkDatabaseVersion() {
-		global $cfgDatabase;
+		global $cfgDatabase, $cfgSqlType, $cfgPrefix;
 		$infoVersion = $this->getVersion();
-		$result = db_query("show tables from `$cfgDatabase` like 'planning_config'");
+		if ($cfgSqlType === 'sqlite') {
+			$configTable = $cfgPrefix . 'config';
+			$result = db_query("SELECT name FROM sqlite_master WHERE type='table' AND name='" . $configTable . "'");
+		} else {
+			$result = db_query("show tables from `$cfgDatabase` like 'planning_config'");
+		}
 		if(db_num_rows($result) == 0) {
 			// base probablement vide
 			return 'database_empty';

@@ -113,7 +113,7 @@ abstract class GField
 	 */
 	public function getSqlValue($val)
 	{
-		global $cfgConnection;
+		global $cfgConnection, $cfgSqlType;
 		$val = trim((string) $val);
 		if (($val == '') || is_null($val)) {
 			$val = NULL;
@@ -121,6 +121,9 @@ abstract class GField
 		if ($this->isValid($val)) {
 			if (is_null($val)) {
 				return 'NULL';
+			} elseif ($cfgSqlType === 'sqlite') {
+				// PDO::quote returns the value already wrapped in quotes
+				return $cfgConnection->quote($val);
 			} else {
 				return '\'' . mysqli_real_escape_string($cfgConnection, $val) . '\'';
 			}

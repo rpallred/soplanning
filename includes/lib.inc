@@ -236,7 +236,7 @@ function usertime2sqltime($s, $formatComplet = 'ok') {
 	return $s;
 }
 
-// valide une date aux différents formats
+// valide une date aux diffï¿½rents formats
 function controlDate($date) {
 	switch($_SESSION['preferences']['dateformat'])
 	{
@@ -261,17 +261,20 @@ function controlDate($date) {
 
 function val2sql($val)
 {
-	global $cfgConnection;
+	global $cfgConnection, $cfgSqlType;
 	$val = trim($val);
 	if (($val == '') || ($val == "\0")) {
 	    return 'NULL';
+	} elseif ($cfgSqlType === 'sqlite') {
+		// PDO::quote returns the value already wrapped in quotes
+		return $cfgConnection->quote($val);
 	} else {
 		return '\'' . mysqli_real_escape_string($cfgConnection, $val) . '\'';
 	}
 }
 
 
-// calcule la couleur (noir ou blanc) qui tranche le mieux avec celle passée en parametre
+// calcule la couleur (noir ou blanc) qui tranche le mieux avec celle passï¿½e en parametre
 function buttonFontColor($bgcolor) {
 	$values_array = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F");
 
@@ -333,7 +336,7 @@ function buttonFontColor($bgcolor) {
 	return $fontColor;
 }
 
-// r?cup?re le message ? afficher, en concaténant un eventuel code d'erreur
+// r?cup?re le message ? afficher, en concatï¿½nant un eventuel code d'erreur
 function formatMessage($smartyTexte) {
 	global $lang;
 	$smartyTemp = new MySmarty('fr');
@@ -494,7 +497,7 @@ function detectionMobile() {
 // fonction pour affichage par jour
 function couvreTranche($dureeDetails, $trancheHoraire) {
 	if($dureeDetails == 'AM') {
-		// on demarre la couverture sur les premieres heures autorisées dans la config, jusqu'à couvrir le nombre d'heures indiqué pour une matinée (config également)
+		// on demarre la couverture sur les premieres heures autorisï¿½es dans la config, jusqu'ï¿½ couvrir le nombre d'heures indiquï¿½ pour une matinï¿½e (config ï¿½galement)
 		$tabTranchesHoraires = explode(',', CONFIG_HOURS_DISPLAYED);
 		$tabTranchesHoraires = explode(',', CONFIG_HOURS_DISPLAYED);
 		for($i=1; $i<=CONFIG_DURATION_AM; $i++) {
@@ -505,7 +508,7 @@ function couvreTranche($dureeDetails, $trancheHoraire) {
 		return false;
 
 	} elseif ($dureeDetails == 'PM') {
-		// on demarre la couverture après que les heures du matin soient déduites
+		// on demarre la couverture aprï¿½s que les heures du matin soient dï¿½duites
 		$tabTranchesHoraires = explode(',', CONFIG_HOURS_DISPLAYED);
 		for($i=1; $i<=CONFIG_DURATION_AM; $i++) {
 			$tmp = array_shift($tabTranchesHoraires);
@@ -518,7 +521,7 @@ function couvreTranche($dureeDetails, $trancheHoraire) {
 		return false;
 
 	} elseif ($dureeDetails == 'duree') {
-		// on couvre selon la durée, sur les heures selectionnées
+		// on couvre selon la durï¿½e, sur les heures selectionnï¿½es
 		$tabTranchesHoraires = explode(',', CONFIG_HOURS_DISPLAYED);
 		for($i=1; $i<=CONFIG_DURATION_DAY; $i++) {
 			if(array_shift($tabTranchesHoraires) == $trancheHoraire) {
@@ -527,7 +530,7 @@ function couvreTranche($dureeDetails, $trancheHoraire) {
 		}
 
 	} elseif (strlen($dureeDetails) == 17) {
-		// on calcule si l'horaire de début et de fin couvre.
+		// on calcule si l'horaire de dï¿½but et de fin couvre.
 		$data = explode(';', $dureeDetails);
 		$heureDebut = $data[0];
 		$heureFin = $data[1];
@@ -545,13 +548,13 @@ function couvreTranche($dureeDetails, $trancheHoraire) {
 		return false;
 
 	} else {
-		// dans tous les autres cas on considère que ça couvre
+		// dans tous les autres cas on considï¿½re que ï¿½a couvre
 		return true;
 	}
 }
 
 function checkConflitRessource($ressource,$date_debut,$date_fin,$duree_details,$user_id,$periode_id,$link_id) {
-	// V?rification de l'exclusivité de la ressource
+	// V?rification de l'exclusivitï¿½ de la ressource
 	$nressource = new Ressource();
 	if($ressource != '') {
 		$nressource->db_load(array('ressource_id', '=', $ressource));
@@ -598,7 +601,7 @@ function checkConflitRessource($ressource,$date_debut,$date_fin,$duree_details,$
 		if (db_num_rows($result)> 0) {
 			// Au premier conflit horaire, on quitte
 			while ($var = db_fetch_array($result)) {
-				// cas particulier : on ne bloque pas si la période trouvée est une autre personne assignée dans la même tâche pour la même ressource
+				// cas particulier : on ne bloque pas si la pï¿½riode trouvï¿½e est une autre personne assignï¿½e dans la mï¿½me tï¿½che pour la mï¿½me ressource
 				$check = new GCollection('Periode');
 				$sql = "SELECT p1.*
 						FROM planning_periode as p1
@@ -607,7 +610,7 @@ function checkConflitRessource($ressource,$date_debut,$date_fin,$duree_details,$
 						AND p2.link_id = " . val2sql($link_id);
 				$check->db_loadSQL($sql);
 				if($check->getCount() > 0){
-					// la période trouvée est bien la soeur (même date ressource et personne assignée 
+					// la pï¿½riode trouvï¿½e est bien la soeur (mï¿½me date ressource et personne assignï¿½e 
 					continue;
 				} else{
 					if (!checkConflitHoraire($var['duree_details'],$duree_details)) {
@@ -626,7 +629,7 @@ function checkConflitRessource($ressource,$date_debut,$date_fin,$duree_details,$
 }
 
 function checkConflitLieu($lieu,$date_debut,$date_fin,$duree_details,$user_id,$periode_id,$link_id) {
-	// V?rification de l'exclusivité du lieu
+	// V?rification de l'exclusivitï¿½ du lieu
 	$nlieu = new Lieu();
 	if($lieu != '') {
 	  $nlieu->db_load(array('lieu_id', '=', $lieu));
@@ -672,7 +675,7 @@ function checkConflitLieu($lieu,$date_debut,$date_fin,$duree_details,$user_id,$p
 		if (db_num_rows($result)>0) {
 			// Au premier conflit horaire, on quitte
 			while ($var = db_fetch_array($result)) {
-				// cas particulier : on ne bloque pas si la période trouvée est une autre personne assignée dans la même tâche pour la même ressource
+				// cas particulier : on ne bloque pas si la pï¿½riode trouvï¿½e est une autre personne assignï¿½e dans la mï¿½me tï¿½che pour la mï¿½me ressource
 				$check = new GCollection('Periode');
 				$sql = "SELECT p1.*
 						FROM planning_periode as p1
@@ -681,7 +684,7 @@ function checkConflitLieu($lieu,$date_debut,$date_fin,$duree_details,$user_id,$p
 						AND p2.link_id = " . val2sql($link_id);
 				$check->db_loadSQL($sql);
 				if($check->getCount() > 0){
-					// la période trouvée est bien la soeur (même date ressource et personne assignée 
+					// la pï¿½riode trouvï¿½e est bien la soeur (mï¿½me date ressource et personne assignï¿½e 
 					continue;
 				} else{
 					if (!checkConflitHoraire($var['duree_details'],$duree_details))
@@ -817,7 +820,7 @@ function upload_image($target,$fichier)
 				}
 			}else
 			{
-				$NouvelleLargeur = 40; //Largeur choisie à 40 px mais modifiable
+				$NouvelleLargeur = 40; //Largeur choisie ï¿½ 40 px mais modifiable
 				$NouvelleHauteur = ( ($infosImg[1] * (($NouvelleLargeur)/$infosImg[0])) );
 				$NouvelleImage = imagecreatetruecolor($NouvelleLargeur , $NouvelleHauteur) or die ("Erreur");
 
@@ -1051,13 +1054,13 @@ function create_tooltip($tableau)
 		$cooltip .= '<br/><strong>' . $smarty->getConfigVars('winPeriode_livrable') . '</strong> : ' . (str_replace(array("\r\n", "\n", "\""), array("<br>", "<br>", "'"), $smarty->getConfigVars('oui')));
 	}
 	
-	// Statut de la tâche
+	// Statut de la tï¿½che
 	if($tableau['statut_tache'] != '') 
 	{
 		$cooltip .= '<br/><strong>' . $smarty->getConfigVars('winPeriode_statut') . '</strong> : ' . (str_replace(array("\r\n", "\n", "\""), array("<br>", "<br>", "'"), $tableau['status']));
 	}
 	
-	// Date de début
+	// Date de dï¿½but
 	$cooltip .= '<br/><strong>' . $smarty->getConfigVars('tab_dateDebut') . '</strong> : ' . sqldate2userdate($tableau['date_debut']);
 	
 	// Date de fin
@@ -1108,7 +1111,7 @@ function create_tooltip($tableau)
 		$cooltip .= '<br/><strong>' . $smarty->getConfigVars('tab_commentaires') . '</strong> : ' . (str_replace(array("\r\n", "\n", "\""), array("<br>", "<br>", "'"), $tableau['notes']));
 	}
 	
-	// Champ personnalisé
+	// Champ personnalisï¿½
 	if($tableau['custom'] != '') 
 	{
 		$cooltip .= '<br/><strong>' . $smarty->getConfigVars('winPeriode_custom') . '</strong> : ' . (str_replace(array("\r\n", "\n", "\""), array("<br>", "<br>", "'"), $tableau['custom']));
@@ -1120,7 +1123,7 @@ function create_tooltip($tableau)
 		$cooltip .= '<br/><strong>' . $smarty->getConfigVars('tab_lien') . '</strong> : ' . (str_replace(array("\r\n", "\n", "\""), array("<br>", "<br>", "'"), $tableau['lien']));
 	}
 	
-	// Créateur
+	// Crï¿½ateur
 	$cooltip.="<hr />";
 	if($tableau['nom_createur'] != '') 
 	{
@@ -1172,7 +1175,7 @@ function createCellProject($infos)
 		$classCell = "cellProject";
 	}
 
-	// Cellule en lecture seule si equipe différente et droit de modification de son équipe seulement
+	// Cellule en lecture seule si equipe diffï¿½rente et droit de modification de son ï¿½quipe seulement
 	if($user->checkDroit('tasks_readonly') || ($user->checkDroit('tasks_modify_team') && ( $infos['team_id'] != $_SESSION['user_groupe_id']))) {
 		$classCellReadOnly = "read-only";
 		$dragndropzone = '';
@@ -1200,8 +1203,8 @@ function createCellProject($infos)
 	}
 	$couleurTexte = buttonFontColor('#' . $couleurFond);
 
-	// Définition des classes de la cellule
-	// Masque les tâches du week-end si l'option est activée (uniquement pour le planning jour)
+	// Dï¿½finition des classes de la cellule
+	// Masque les tï¿½ches du week-end si l'option est activï¿½e (uniquement pour le planning jour)
 	if ($base_colonne=="users"){
 		$classHidden = "";
 	} else {
@@ -1212,12 +1215,12 @@ function createCellProject($infos)
 		}
 	}
 	
-	// Si une tache répétitive, on ajoute la classe rep
+	// Si une tache rï¿½pï¿½titive, on ajoute la classe rep
 	if (!empty($infos['parent_id'])) {
 		$classHidden .= " tacherepetitive";
 	}
 	
-	// Définition de la case avec le code du projet avec définition d'un style personalisé
+	// Dï¿½finition de la case avec le code du projet avec dï¿½finition d'un style personalisï¿½
 	$cellule .= '<div id="c_' . $infos['periode_id'] . '_' . $current_date2 . '" '.$dragndropzone.' class="'.$classCell.' tooltipster '.$classHidden.' ' . $classCellReadOnly . '" data-content="'.$L0.'" ondragstart="drag(event)"  title="'.$infos['tooltip'].'"	style="color:'.$couleurTexte.';background-color:#' . $couleurFond . ';';
 	// Cas affichage heures
 	if ($base_ligne=='heures')
@@ -1258,7 +1261,7 @@ function createCellProject($infos)
 	 
 	 // calcule de la hauteur de cellule
 	 $hauteur = round($infos['dureeHeures']*2*$hauteurcellule,0)-5;
-	 // On gère la demie-heure
+	 // On gï¿½re la demie-heure
 	 $minutes_debut=$infos['heure_debut']-floor($infos['heure_debut']);
 	 $minutes_fin=$infos['heure_fin']-floor($infos['heure_fin']);
 	 
@@ -1304,7 +1307,7 @@ function createCellProject($infos)
 		}
 	}
 	
-	// Cas des demies journées (affichage d'une case tronquée)
+	// Cas des demies journï¿½es (affichage d'une case tronquï¿½e)
 	if($dimensionCase=='reduit') {
 		if ($biseau==true)
 		{
@@ -1316,26 +1319,26 @@ function createCellProject($infos)
 		}
 	}
 
-	// On barre le texte de la tâche
+	// On barre le texte de la tï¿½che
 	if($infos['statut_barre'] == '1') {
 			$cellule .= 'text-decoration:line-through;';
 	}
-	// On met le texte de la tâche en gras
+	// On met le texte de la tï¿½che en gras
 	if($infos['statut_gras'] == '1') {
 			$cellule .= 'font-weight:bold;';
 	}
-	// On met le texte de la tâche en italique
+	// On met le texte de la tï¿½che en italique
 	if($infos['statut_italique'] == '1') {
 			$cellule .= 'font-style:italic;';
 	}
-	// On met le texte de la tâche en souligne
+	// On met le texte de la tï¿½che en souligne
 	if($infos['statut_souligne'] == '1') {
 			$cellule .= 'text-decoration:underline;';
 	}
 	
 	$cellule .= '"';
 				
-	// Script d'ouverture du lien dans une nouvelle fenêtre (en cas de lien)
+	// Script d'ouverture du lien dans une nouvelle fenï¿½tre (en cas de lien)
 	if (!$user->checkDroit('tasks_modify_all') && !($user->checkDroit('tasks_modify_own_project') && $infos['projet_createur_id'] == $user->user_id) && !($user->checkDroit('tasks_modify_own_task') && ($infos['user_id'] == $user->user_id || $infos['projet_createur_id'] == $user->user_id)) && $infos['lien'] != '') {
 		$cellule .=" onclick=\"javascript:window.open('".$infos['lien']."')\"";
 	}
@@ -1392,7 +1395,7 @@ function createCellProject($infos)
 		$L1=$infos['nom_cellule'];
 		$L2=$infos['titre'];
 
-		// Calcul de l'info du début
+		// Calcul de l'info du dï¿½but
 		if (isset($infos['duree_details_heure_debut'])) {
 			$infoDebut=sqltime2usertime($infos['duree_details_heure_debut']);
 		}elseif ($infos['duree_details'] == 'AM') {
@@ -1403,7 +1406,7 @@ function createCellProject($infos)
 			$infoDebut = $heureDebutMatin;
 		}
 				
-		// Calcul de la durée
+		// Calcul de la durï¿½e
 		if (isset($infos['duree'])) {
 			$affichageDuree=$infos['duree'];
 		}else {
@@ -1413,7 +1416,7 @@ function createCellProject($infos)
 			$L2='...';
 		}
 					
-		// Si on est une case large, on affiche des informations détaillées
+		// Si on est une case large, on affiche des informations dï¿½taillï¿½es
 		if($dimensionCase=='large')
 		{
 			//mb_internal_encoding("UTF-8");
@@ -1433,7 +1436,7 @@ function createCellProject($infos)
 			}
 			$nom.= '</div>';
 			
-			// Dans le format réduit, c'est le seul code
+			// Dans le format rï¿½duit, c'est le seul code
 		}else {
 			$nom = xss_protect(substr($L1, 0, CONFIG_PLANNING_CODE_WIDTH));
 			if (CONFIG_PLANNING_DIFFERENCIE_TACHE_LIEN==1 and $infos['lien'] != '') 
@@ -1461,7 +1464,7 @@ return $cellule;
 }
 
 // multisort array
-// Utilisation : array_sort_by_columns($données, 'champ1', SORT_DESC, 'champ2', SORT_ASC);
+// Utilisation : array_sort_by_columns($donnï¿½es, 'champ1', SORT_DESC, 'champ2', SORT_ASC);
 function array_sort_by_columns() {
     $args = func_get_args();
     $data = array_shift($args);
@@ -1480,7 +1483,7 @@ function array_sort_by_columns() {
 }
 
 
-// calcul durée 
+// calcul durï¿½e 
 function calcul_duree_heures_non_masquees($heure_debut,$heure_fin) {
 	global $planning;
 	$nbheures=0;
@@ -1509,7 +1512,7 @@ function calcul_duree_heures_non_masquees($heure_debut,$heure_fin) {
 		}elseif ($h == ($end-0.5)) $nbheures=$nbheures+0.5;
 	}
 	//exit;
-	// Si la dernière heure est masquée
+	// Si la derniï¿½re heure est masquï¿½e
 	
 	//if ($minutes_fin>0.5) $nbheures=$nbheures+0.5;
 	//if(!in_array($heure_fin,$tabTranchesHoraires)) $nbheures=$nbheures+0.5;
@@ -1583,7 +1586,7 @@ function logAction($typeaction,$infos=array()) {
 
 
 function chargerSessionStatutsDefaut(){
-	// Préférence de sélection par défaut
+	// Prï¿½fï¿½rence de sï¿½lection par dï¿½faut
 	$statuses = new GCollection('Status');
 	$statuses->db_load(array('defaut', '=', 1, 'affichage', 'IN', array('t', 'tp')));
 	$_SESSION['status_taches_par_defaut'] = array();
@@ -1592,7 +1595,7 @@ function chargerSessionStatutsDefaut(){
 		$_SESSION['status_taches_par_defaut'][] = $s['status_id'];
 	}
 	if(count($_SESSION['status_taches_par_defaut']) == 0){
-		// si aucun statut par défaut, on prend les autres
+		// si aucun statut par dï¿½faut, on prend les autres
 		$status = new GCollection('Status');
 		$status->db_load(array('affichage', 'IN', array('t', 'tp')));
 		$_SESSION['status_taches_par_defaut'] = $status->get('status_id');
@@ -1648,7 +1651,7 @@ function cprdir($dir2copy,$dir_paste)
 }
 
 function replaceAccents($str) {
-  $search = explode(",","ç,æ,œ,á,é,í,ó,ú,à,è,ì,ò,ù,ä,ë,ï,ö,ü,ÿ,â,ê,î,ô,û,å,ø,Ø,Å,Á,À,Â,Ä,È,É,Ê,Ë,Í,Î,Ï,Ì,Ò,Ó,Ô,Ö,Ú,Ù,Û,Ü,Ÿ,Ç,Æ,Œ");
+  $search = explode(",","ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½,ï¿½");
   $replace = explode(",","c,ae,oe,a,e,i,o,u,a,e,i,o,u,a,e,i,o,u,y,a,e,i,o,u,a,o,O,A,A,A,A,A,E,E,E,E,I,I,I,I,O,O,O,O,U,U,U,U,Y,C,AE,OE");
   return str_replace($search, $replace, $str);
 }
@@ -1714,14 +1717,14 @@ function cleanStr($str) {
 	for ($i=0; $i <= strlen($str)-1; $i++) {
 		if (preg_match('/[a-z]|[A-Z]|[0-9]/',$str[$i]))		$return .= strtolower($str[$i]);
 		elseif (preg_match('/[_-]/', $str[$i]))				$return .= '_';
-		elseif (preg_match('/[àâäãáåÀÁÂÃÄÅ]/', $str[$i]))	$return .= 'a';
-		elseif (preg_match('/[æÆ]/', $str[$i]))				$return .= 'a';
-		elseif (preg_match('/[çÇ]/', $str[$i]))				$return .= 'c';
-		elseif (preg_match('/[éèêëÉÈÊËE]/', $str[$i]))		$return .= 'e';
-		elseif (preg_match('/[îïìíÌÍÎÏ]/', $str[$i]))		$return .= 'i';
-		elseif (preg_match('/[ôöðòóÒÓÔÕÖ]/', $str[$i]))		$return .= 'o';
-		elseif (preg_match('/[ùúûüÙÚÛÜ]/', $str[$i]))		$return .= 'u';
-		elseif (preg_match('/[ýÿÝŸ]/', $str[$i]))			$return .= 'y';
+		elseif (preg_match('/[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]/', $str[$i]))	$return .= 'a';
+		elseif (preg_match('/[ï¿½ï¿½]/', $str[$i]))				$return .= 'a';
+		elseif (preg_match('/[ï¿½ï¿½]/', $str[$i]))				$return .= 'c';
+		elseif (preg_match('/[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½E]/', $str[$i]))		$return .= 'e';
+		elseif (preg_match('/[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]/', $str[$i]))		$return .= 'i';
+		elseif (preg_match('/[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]/', $str[$i]))		$return .= 'o';
+		elseif (preg_match('/[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]/', $str[$i]))		$return .= 'u';
+		elseif (preg_match('/[ï¿½ï¿½ÝŸ]/', $str[$i]))			$return .= 'y';
 		elseif (preg_match('/[ ]/', $str[$i]))				$return .= '_';
 		elseif (preg_match('/[.]/', $str[$i]))				$return .= '_';
 		elseif (preg_match('/[\\/]/', $str[$i]))			$return .= '_';
@@ -1799,30 +1802,30 @@ function utf8_converter($array){
     return $array;
 }
 
-// Le mot de passe doit inclure au moins 3 des 4 catégories suivantes : lettres minuscules, lettres majuscules, chiffres, caractères spéciaux.
+// Le mot de passe doit inclure au moins 3 des 4 catï¿½gories suivantes : lettres minuscules, lettres majuscules, chiffres, caractï¿½res spï¿½ciaux.
 function verifierComplexiteMotDePasse($motDePasse) {
     // Longueur minimale
     $longueurMin = 12;
 
-    // Expressions régulières pour les différentes catégories de caractères
+    // Expressions rï¿½guliï¿½res pour les diffï¿½rentes catï¿½gories de caractï¿½res
     $regexMinuscules = '/[a-z]/'; // Lettres minuscules
     $regexMajuscules = '/[A-Z]/'; // Lettres majuscules
     $regexChiffres = '/[0-9]/';   // Chiffres
-    $regexSpeciaux = '/[\W_]/';   // Caractères spéciaux (\W inclut tout sauf lettres et chiffres, _ inclus explicitement)
+    $regexSpeciaux = '/[\W_]/';   // Caractï¿½res spï¿½ciaux (\W inclut tout sauf lettres et chiffres, _ inclus explicitement)
 
-    // Vérification de la longueur
+    // Vï¿½rification de la longueur
     if (strlen($motDePasse) < $longueurMin) {
         return false;
     }
 
-    // Compter les catégories respectées
+    // Compter les catï¿½gories respectï¿½es
     $categoriesRespectees = 0;
     $categoriesRespectees += preg_match($regexMinuscules, $motDePasse) ? 1 : 0;
     $categoriesRespectees += preg_match($regexMajuscules, $motDePasse) ? 1 : 0;
     $categoriesRespectees += preg_match($regexChiffres, $motDePasse) ? 1 : 0;
     $categoriesRespectees += preg_match($regexSpeciaux, $motDePasse) ? 1 : 0;
 
-    // Vérifier si au moins 3 catégories sur 4 sont respectées
+    // Vï¿½rifier si au moins 3 catï¿½gories sur 4 sont respectï¿½es
     if ($categoriesRespectees < 3) {
         return false;
     }
