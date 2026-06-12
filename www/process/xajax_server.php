@@ -1621,7 +1621,7 @@ function submitFormUser($user_id, $user_id_origine, $user_groupe_id, $nom, $emai
 			return $objResponse;
 		}
         $user_form->password = $user_form->hashPassword($password);
-        $user_form->cle = MD5(RAND());
+        $user_form->cle = MD5(generateRandomString());
     }
     if ($visible_planningOui == 'true') {
         $user_form->visible_planning = 'oui';
@@ -1789,7 +1789,7 @@ function submitFormProfil($user_id, $email, $password, $dateformat, $notificatio
 			return $objResponse;
 		}
         $user->password = $user->hashPassword($password);
-        $user->cle = MD5(RAND());
+        $user->cle = MD5(generateRandomString());
     }
 
     if (trim($email) != '' && !VerifierAdresseMail($email)) {
@@ -1924,7 +1924,7 @@ function nouveauPwd($password)
 		return $objResponse;
 	}
     $userTmp->password = $userTmp->hashPassword($password);
-    $userTmp->cle = MD5(RAND());
+    $userTmp->cle = MD5(generateRandomString());
     if (!$userTmp->db_save()) {
         $objResponse->addAlert($smarty->getConfigVars('erreur'));
         return $objResponse;
