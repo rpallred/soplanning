@@ -52,7 +52,12 @@ if(isset($_POST['desactiverfiltreUserAudit'])) {
 }
 // Purge de l'audit avec la rétention prévue
 $audit_purge = new GCollection('audit');
-$sqlPurge="DELETE FROM planning_audit WHERE date_modif <= DATE_ADD(CURDATE(), INTERVAL -".CONFIG_SOPLANNING_OPTION_AUDIT_RETENTION." DAY);";
+$auditRetention = (int) CONFIG_SOPLANNING_OPTION_AUDIT_RETENTION;
+if ($cfgSqlType === 'sqlite') {
+	$sqlPurge = "DELETE FROM planning_audit WHERE date_modif <= date('now', '-" . $auditRetention . " day');";
+} else {
+	$sqlPurge = "DELETE FROM planning_audit WHERE date_modif <= DATE_ADD(CURDATE(), INTERVAL -" . $auditRetention . " DAY);";
+}
 $audit_purge->db_loadSQL($sqlPurge);
 
 if(isset($_POST['filtreUserAudit'])) {
