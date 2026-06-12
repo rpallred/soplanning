@@ -1,3 +1,7 @@
 database.inc
+database.inc.hosted-backup
 debug.txt
 mutex_file.txt
+smarty/templates_c/*
+www/upload/files/*
+!www/upload/files/.htaccess

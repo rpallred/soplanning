@@ -24,7 +24,7 @@ INSERT INTO `planning_config` VALUES('SMTP_LOGIN', '', '');
 INSERT INTO `planning_config` VALUES('SMTP_PASSWORD', '', '');
 INSERT INTO `planning_config` VALUES('SMTP_SECURE', '', '');
 INSERT INTO `planning_config` VALUES('SOPLANNING_URL', '', 'Your SOPlanning instance url, to be able to send email with links');
-INSERT INTO `planning_config` VALUES('SECURE_KEY', MD5(RAND()), 'String used only for security matters');
+INSERT INTO `planning_config` VALUES('SECURE_KEY', SHA2(CONCAT(RAND(), UUID(), RAND()), 256), 'String used only for security matters');
 INSERT INTO `planning_config` VALUES('PLANNING_REPEAT_HEADER', 0, 'If > 0, repeat header (days/months) in the planning each x lines');
 INSERT INTO `planning_config` VALUES('DURATION_AM', '04:00', 'Morning duration when calculating worked hours');
 INSERT INTO `planning_config` VALUES('DURATION_PM', '05:00', 'Afternoon duration when calculating worked hours');
