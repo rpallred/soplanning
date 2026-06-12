@@ -26,6 +26,7 @@
 				{/if}
 				<form action="{$BASE}/process/groupe_save" method="POST" class="form-horizontal">
 					<input type="hidden" name="saved" value="{$groupe.saved}" />
+					<input type="hidden" name="crsf" value="{$smarty.session.CRSF}" />
 					<input type="hidden" name="groupe_id" value="{$groupe.groupe_id|xss_protect}" />
 					<div class="input-group">
 						<label class="col-md-2 col-form-label" for="nom">{#groupe_nom#} :</label>

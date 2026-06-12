@@ -11,6 +11,14 @@ if(!$user->checkDroit('projectgroups_manage_all')) {
 	exit;
 }
 
+// CSRF check : token required for any state change (delete via GET, save via POST)
+$crsfRecu = $_GET['crsf'] ?? $_POST['crsf'] ?? '';
+if(!isset($_SESSION['CRSF']) || !hash_equals($_SESSION['CRSF'], (string) $crsfRecu)) {
+	$_SESSION['erreur'] = 'droitsInsuffisants';
+	header('Location: ' . BASE . '/groupe_list');
+	exit;
+}
+
 if (isset($_GET['action']) && $_GET['action'] == 'delete'){
 	if (!isset($_GET['groupe_id'])){
 		die('Index introuvable, suppression impossible');

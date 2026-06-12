@@ -68,7 +68,7 @@
 							<tr>
 								<td>
 									<a href="{$BASE}/groupe_form?groupe_id={$groupe.groupe_id}"><i class="fa fa-pencil fa-lg fa-fw" aria-hidden="true"></i></a>
-									<a href="{$BASE}/process/groupe_save?groupe_id={$groupe.groupe_id}&action=delete" onClick="javascript:return confirm('{#groupe_liste_confirmSuppr#|escape:"javascript"}')"><i class="fa fa-trash-o fa-lg fa-fw" aria-hidden="true"></i></a>
+									<a href="{$BASE}/process/groupe_save?groupe_id={$groupe.groupe_id}&action=delete&crsf={$smarty.session.CRSF}" onClick="javascript:return confirm('{#groupe_liste_confirmSuppr#|escape:"javascript"}')"><i class="fa fa-trash-o fa-lg fa-fw" aria-hidden="true"></i></a>
 								</td>
 								<td>{$groupe.nom|xss_protect}&nbsp;</td>
 								<td>{$groupe.totalProjets}&nbsp;</td>
