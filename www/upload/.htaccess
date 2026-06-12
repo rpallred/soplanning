@@ -1,0 +1,19 @@
+
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+        <IfModule mod_php.c>
+            php_flag engine off
+        </IfModule>
+        <IfModule php_module>
+            php_flag engine off
+        </IfModule>
+        <IfModule php7_module>
+            php_flag engine off
+        </IfModule>
+        <IfModule php8_module>
+            php_flag engine off
+        </IfModule>
+        AddType text/plain .php .php3 .php4 .php5 .phtml
+    </IfModule>
+</IfModule>

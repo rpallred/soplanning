@@ -1,0 +1,71 @@
+projet_id;nom;iteration;couleur;budget_temps;budget_montant;livraison;lien;statut;groupe_id;createur_id
+ArretTrav;"Arrêt de Travail";;000000;;;;;a_faire;;GAILLARD
+BueauJB;BureauJB;;FFFFFF;;;;;a_faire;;BENDLER
+BureauAN;BureauAN;;FFFFFF;;;;;a_faire;;NICOLAS
+BureauAO;BureauAO;;FFFFFF;;;;;a_faire;;OSSELIN
+BureauAR;BureauAR;;ffffff;;;;;a_faire;;ROUSSEL
+BureauBI;"Bureau BI";;FFFFFF;;;;;a_faire;;IZAC
+BureauCK;BureauCK;;FFFFFF;;;;;a_faire;;KUNETZ
+BureauDF;BureauDF;;FFFFFF;;;;;a_faire;;FERREIRA
+BureauEC;BureauEC;;FFFFFF;;;;;a_faire;;CHERAMY
+BureauEL;BureauEL;;FFFFFF;;;;;a_faire;;LECLERQ
+BureauFR;BureauFR;;FFFFFF;;;;;a_faire;;ROUVIER
+BureauJC;BureauJC;;FFFFFF;;;;;a_faire;;GAUTIER
+BureauJDA;BureauJDA;;FFFFFF;;;;;a_faire;;ATHENOL
+BureauJL;BureauJL;;FFFFFF;;;;;a_faire;;LECOMTE
+BureauJT;BureauJT;;FFFFFF;;;;;a_faire;;TRZEPALKOWSKI
+BureauLL;BureauLL;;FFFFFF;;;;;a_faire;;LECLAIRE
+BureauLT;BureauLT;;FFFFFF;;;;;a_faire;;TURBAN
+BureauMB;BureauMB;;FFFFFF;;;;;a_faire;;BOURLES
+BureauMG;BureauMG;;FFFFFF;;;;;a_faire;;GAILLARD
+BureauMGU;BureauMGU;;FFFFFF;;;;;a_faire;;GUICHETEAU
+BureauPAD;BureauPAD;;FFFFFF;;;;;a_faire;;DELVOYE
+BureauPL;BureauPL;;FFFFFF;;;;;abandon;;GAILLARD
+BureauRQ;BureauRQ;;ffffff;;;;;a_faire;;QUILLERIER
+BureauSPO;BureauSPO;;FFFFFF;;;;;a_faire;;PORZIO
+BureauSR;BureauSR;;FFFFFF;;;;;a_faire;;ROGGE
+BureauSS;BureauSS;;FFFFFF;;;;;a_faire;;SABATIER
+BureauYASA;BureauYASA;;FFFFFF;;;;;a_faire;;AITSIAMER
+CODIR;CODIR;;0276aa;;;;;a_faire;;LANGE
+Commercial;Commercial;;FFFFFF;;;;;a_faire;;VIOLIN
+CONGES;CONGES;;FFFF17;;;;;a_faire;;AudreyP
+COURS;COURS;;2EC770;;;;;a_faire;;AudreyP
+Deplacement;Déplacement;;ff784e;;;;;a_faire;;AudreyP
+Dispo;"Offre ou projet";"Temps disponible pour prise en main dossier au stade de l'offre ou de la commande";98FF97;;;;;a_faire;1;GAILLARD
+EAE;"Entretien annuel";;f1b3c9;;;;;a_faire;;LANGE
+FinContrat;"Fin de contrat";;000000;;;;;a_faire;;AudreyP
+Formation;Formation;;FF3912;;;;;a_faire;;AudreyP
+IDDEA;"EVENEMENT IDDEA";;0276aa;;;;;a_faire;;SABATIER
+Medical;"Visite Médicale";;FF6C17;;;;;a_faire;;AudreyP
+REUNIONOLIVET;"REUNION OLIVET";;FFFFFF;;;;;a_faire;1;LANGE
+RTTimposee;RTTimposée;;FFFF17;;;;;a_faire;;AudreyP
+SSE;SSE;;8bc34a;;;;;a_faire;;GAILLARD
+TELETRAVAIL;Télétravail;;FFFFFF;;;;;abandon;;AudreyP
+TempsPartiel;"Temps Partiel";;a9dff8;;;;;a_faire;;AudreyP
+TerrainAN;TerrainAN;;6379ff;;;;;a_faire;;NICOLAS
+TerrainAO;TerrainAO;;6379FF;;;;;a_faire;;OSSELIN
+TerrainAR;TerrainAR;;6379ff;;;;;a_faire;;ROUSSEL
+TerrainBI;TerrainBI;;6379FF;;;;;a_faire;;IZAC
+TerrainCK;TerrainCK;;6379FF;;;;;a_faire;;KUNETZ
+TerrainDF;TerrainDF;;6379FF;;;;;a_faire;;FERREIRA
+TerrainEC;TerrainEC;;6379ff;;;;;a_faire;;CHERAMY
+TerrainEL;TerrainEL;;6379ff;;;;;a_faire;;AudreyP
+TerrainFR;TerrainFR;;6379FF;;;;;a_faire;;ROUVIER
+TerrainHA;TerrainHA;;6379FF;;;;;a_faire;;GAILLARD
+TerrainJB;TerrainJB;;6379ff;;;;;a_faire;;BENDLER
+TerrainJC;TerrainJC;;6379FF;;;;;a_faire;;GAUTIER
+TerrainJDA;TerrainJDA;;6379FF;;;;;a_faire;;ATHENOL
+TerrainJL;TerrainJL;;6379FF;;;;;a_faire;;LECOMTE
+TerrainJT;TerrainJT;;6379ff;;;;;a_faire;;TRZEPALKOWSKI
+TerrainLL;TerrainLL;;6379FF;;;;;a_faire;;LECLAIRE
+TerrainLT;TerrainLT;;6379FF;;;;;a_faire;;TURBAN
+TerrainMB;TerrainMB;;6379ff;;;;;a_faire;;BOURLES
+TerrainMG;TerrainMG;;6379FF;;;;;a_faire;;GAILLARD
+TerrainMGU;TerrainMGU;;6379FF;;;;;a_faire;;GUICHETEAU
+TerrainPAD;TerrainPAD;;6378ff;;;;;a_faire;;DELVOYE
+TerrainRQ;TerrainRQ;;6379ff;;;;;a_faire;;QUILLERIER
+TerrainSPO;TerrainSPO;;6379FF;;;;;a_faire;;PORZIO
+TerrainSS;TerrainSS;;6379FF;;;;;a_faire;;SABATIER
+TerrainYASA;TerrainYASA;;6379ff;;;;;a_faire;;AITSIAMER
+TerraiSR;TerrainSR;;6379ff;;;;;a_faire;;ROGGE
+test1;test1;;FFFFFF;;;;;a_faire;;ADM

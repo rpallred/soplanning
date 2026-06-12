@@ -1,0 +1,77 @@
+cle;valeur;commentaire
+AI_OLLAMA_MODEL;llama3.2:3b;
+AI_OLLAMA_URL;http://localhost:11434;
+CONTACT_FORM_DEACTIVATE;;"Put 1 to deactivate the display of the small button/popin (contact form)"
+CURRENT_VERSION;1.56.00;"Internal key for auto upgrade control"
+DEFAULT_NB_DAYS_DISPLAYED;2;"Default number of days displayed in the planning view by day"
+DEFAULT_NB_MONTHS_DISPLAYED;2;"Default number of months displayed in the planning"
+DEFAULT_NB_PAST_DAYS;5;"Default number of past days to display in the planning"
+DEFAULT_NB_ROWS_DISPLAYED;50;"Default number of rows displayed in the planning"
+DEFAULT_PERIOD_LINK;;"Default value for link in a period"
+DURATION_AM;04:00;"Morning duration when calculating worked hours"
+DURATION_DAY;08:00;"Duration when only one day is selected"
+DURATION_PM;04:00;"Afternoon duration when calculating worked hours"
+GOOGLE_2FA_ACTIVE;0;
+GOOGLE_OAUTH_ACTIVE;0;
+GOOGLE_OAUTH_CLIENT_ID;;
+GOOGLE_OAUTH_CLIENT_SECRET;;
+HOURS_DISPLAYED;8,9,10,11,14,15,16,17;"List of hours displayed in the day view"
+LOGOUT_REDIRECT;;"Optional redirect url after logout (for exemple to return on your own intranet). ex : http://www.google.com"
+NOTIFICATION_EMAIL_COCHE;0;"Default state for notification checkbox in task form"
+PASSWORD_COMPLEXITY;0;"1 for CNIL rules"
+PLANNING_AFFICHAGE_STATUS;aucun;"Show status"
+PLANNING_CELL_FONTSIZE;0;"Cell Font size"
+PLANNING_CODE_WIDTH;14;"Code width"
+PLANNING_CODE_WIDTH_LARGE;14;"Code width large mode"
+PLANNING_COL_WIDTH;30;"Planning col width"
+PLANNING_COL_WIDTH_LARGE;170;"Planning col width large mode"
+PLANNING_COULEUR_TACHE;0;"Task Color"
+PLANNING_DATE_FORMAT;1;"Date Format"
+PLANNING_DAYS_OF_WEEK_DISPLAY;"{""1"":{""inclus"":1,""affiche"":1,""grise"":""0""},""2"":{""inclus"":1,""affiche"":1,""grise"":""0""},""3"":{""inclus"":1,""affiche"":1,""grise"":""0""},""4"":{""inclus"":1,""affiche"":1,""grise"":""0""},""5"":{""inclus"":1,""affiche"":1,""grise"":""0""},""6"":{""inclus"":""0"",""affiche"":1,""grise"":1},""7"":{""inclus"":""0"",""affiche"":1,""grise"":1}}";"Define how each day is display (normal, grey, hidden)"
+PLANNING_DIFFERENCIE_TACHE_COMMENTAIRE;0;"Task comment"
+PLANNING_DIFFERENCIE_TACHE_LIEN;1;"Task link"
+PLANNING_DIFFERENCIE_TACHE_PARTIELLE;1;"Half Task "
+PLANNING_DUREE_CRENEAU_HORAIRE;30;"Time duration"
+PLANNING_HIDE_WEEKEND_TASK;0;"Hide weekend task"
+PLANNING_LINE_HEIGHT;;"Default line height in the planning. If not specified, it fits the username height"
+PLANNING_MASQUER_FERIES;0;"Hide holidays"
+PLANNING_ONE_ASSIGNMENT_MAX_PER_DAY;0;"Option to display only one assignment/task per cell/day in the planning (put ""1"" to activite this option)"
+PLANNING_PAGES;1,5,10,20,50,100;"rows per page in the planning"
+PLANNING_TEXTE_TACHES_LIEU;code_projet;"Cell text location"
+PLANNING_TEXTE_TACHES_PERSONNE;code_projet;"Cell text user"
+PLANNING_TEXTE_TACHES_PROJET;code_personne;"Cell text project"
+PLANNING_TEXTE_TACHES_RESSOURCE;code_projet;"Cell text resource"
+PLANNING_WEEKEND_IN_GREY;0;"Display saturday and sunday in grey even if included if working days"
+PROJECT_COLORS_POSSIBLE;;"color choice limitation for planner (empty for no limit). Exemple :#ff0000,#aa8811,#446622"
+REFRESH_TIMER;1500;"refresh time for the planning page (time in second)"
+SECURE_KEY;0c43734c2df5c9fdcf1d3f09a9cd8958;"String used only for security matters"
+SEMAPHORE_ACTIVATED;0;"Activated in order to avoid periode_id crossing when creating a lot of tasks at the same time"
+SMTP_FROM;noreply@notif.soplanning.org;
+SMTP_HOST;in-v3.mailjet.com;
+SMTP_LOGIN;730cf02cf3ab70e56a4aa5ae114157e4;
+SMTP_PASSWORD;63d17d3d43c457f123fd177a95efcdf6;
+SMTP_PORT;587;
+SMTP_SECURE;tls;
+SOPLANNING_API_KEY_NAME;SOPLANNING-API;
+SOPLANNING_API_KEY_VALUE;2630f3b9-bdfe-11eb-bcb6-0050568c7884;
+SOPLANNING_LOGO;;Logo
+SOPLANNING_OPTION_ACCES;0;"Private access"
+SOPLANNING_OPTION_AUDIT;1;"Audit module"
+SOPLANNING_OPTION_AUDIT_CONNEXIONS;1;"Audit connexion"
+SOPLANNING_OPTION_AUDIT_EQUIPES;1;"Audit team"
+SOPLANNING_OPTION_AUDIT_GROUPES;1;"Audit project group"
+SOPLANNING_OPTION_AUDIT_LIEUX;1;"Audit location"
+SOPLANNING_OPTION_AUDIT_PROJETS;1;"Audit project"
+SOPLANNING_OPTION_AUDIT_RESSOURCES;1;"Audit ressource"
+SOPLANNING_OPTION_AUDIT_RETENTION;30;"Audit retention"
+SOPLANNING_OPTION_AUDIT_STATUTS;1;"Audit status"
+SOPLANNING_OPTION_AUDIT_TACHES;1;"Audit tasks"
+SOPLANNING_OPTION_AUDIT_UTILISATEURS;1;"Audit users"
+SOPLANNING_OPTION_LIEUX;0;"Location Option"
+SOPLANNING_OPTION_RESSOURCES;0;"Ressource Option"
+SOPLANNING_OPTION_VISITEUR;0;"Visitor can add or update task"
+SOPLANNING_THEME;soplanning.css;"Default theme"
+SOPLANNING_TITLE;SOPLANNING;"Change the title of Soplanning for integration in extranet"
+SOPLANNING_URL;http://localhost/soplanning/branches/v1.56.00/www/;"Your SOPlanning instance url, to be able to send email with links"
+TIMEZONE;Europe/Paris;Timezone
+WHITELIST_UPLOAD;pdf,docx,doc,xls,xlsx,png,jpg,jpeg,gif;"File extension allowed for upload"

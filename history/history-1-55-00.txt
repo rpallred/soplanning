@@ -1,0 +1,18 @@
+v1.55.00
+
+- PDF export now generated on several pages
+- New value for Statutes : included in total (or not), will impact ROI calculation
+- Small fixes and display improvment (sidebars width and others)
+- Improved cells large/detailed view, no more text overlap
+- Fix on planning filter buttons whe using a mobile
+- Bugfix display on milestone icon
+- Security fixes (XSS and rights)
+- Image upload update (rotation correctly handled)
+- Bugfix on custom filters
+- Bugfix on planning display when large mode activated (tasks not properly aligned)
+- more vertical space between tasks
+- Bugfix on week number in PDF export
+- Bugfix on task beveling in the cells
+- Bugfix on weekly repeat
+- Bugfix on multiselection dropdown (select/unselect all)
+- Improved compatibility with PHP 8.4

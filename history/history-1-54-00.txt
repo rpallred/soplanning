@@ -1,0 +1,19 @@
+v1.54.00
+
+- Planning left column now aligned on left side
+- Removed ".php" from all urls
+- Custom filters : you can now save your active filters and load them all later
+- Added some informations to project list (first and last task date, number of people assigned)
+- New right : user can view only a specific list of projects
+- Bulk right form update with last rights
+- user can now order daysoff/holidays by date
+- ICS updated for french holidays
+- User can now change task repetition even for existing tasks (all future occurences will be deleted before creating new future tasks)
+- Added optional setting in order to force strong passwords (CNIL recommandation)
+- Confirmation message now displayed on planning after creating/modifying/deleting tasks
+- Added assigned people name in notification email when creating/modifying a task
+- Bugfix on cells not hidden on planning : when option is activated in order to hide them during days off the were still visible
+- Bugfix on default end date selection (based on start date)
+- Bugfix on audit data
+- Some security fixes (XSS and others)
+- Minor fixes

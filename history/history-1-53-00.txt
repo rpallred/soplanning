@@ -1,0 +1,28 @@
+v1.53.00
+
+- Improved management of days displayed in the planning : can now display/hide each day of the week, set if the day greyed out or not, and set if the day is included in counters and calculations
+- Can now create a new user having the same rights and team than the one selected
+- New fields added to raw csv export
+- Color added for resource and place.
+- Project search in ROI page
+- Limitation of file upload in tasks: for security reasons only certain file extensions are possible, you can modify the list in Soplanning settings
+- Delete of a task if more than one person assigned : can now delete for one or all
+- Slovenian translation added
+- new Status just created is now selected by default when going back to the planning
+- Display improved on mobile : left column width (user or project name) is limited to leave enough places for the planning on the right side
+- hide link to the task in notification email if user is read only
+- Updated mobile detection
+- Upgraded some libraries
+- PHP8.3 compatibility
+- Bugfix on beveled cells when using a read only user
+- Bugfix on repeated tasks : if task covers several days, and user want to repeat and not create tasks if covering days off, it was not working in all cases
+- Debug on task name autocomplete : a shorter text than proposals can now be filled
+- Fixed datepicker display on "Display my tasks" page
+- Bugfix on import module for tasks
+- Added project link on left column in planning (clickable icon displayed if project link filled)
+- Bugfix on task display (shifting of task) when days off
+- Bugfix when displaying by place/ressource with "hide empty lines" activated
+- Bugfix on ical download
+- Bugfix on summary below planning when only one task of one minute
+- Some security fixes
+- Minor fixes

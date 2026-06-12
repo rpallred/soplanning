@@ -1,0 +1,24 @@
+v1.56.00
+
+Email notification : you can now notify people before or after a task with a delay
+Several security fixes 
+API new function : GET statutes
+Various improvments on design and code 
+Delete task before or after : now also delete the task you are on (only the previous/following before fix)
+Small changes on ICAL interface
+Fix on sticky planning position on the page
+Better hash algorithm applied to passwords, compliant with existing ones
+Fixed small issue on menus
+Dropdown in forms will not accept anymore to fill free text (make errors)
+Planning display button moved on first cell of the planning
+Fix on project chart
+Removed obsolete agenda view 
+Manage browser zoom (was causing bad display)
+Fix on filter buttons (above the plannig) on mobile, content is now well displayed in all cases
+Fix on mysql database setup 
+Deactivated blinking informations on detailed view (performances issue) 
+Improved tasks drag and drop (performances issue when a lot of tasks in the planning) 
+Fix on PDF export 
+Fix on ROI calculation
+Bugfix for A0 format on PDF export
+

@@ -1,0 +1,6 @@
+status_id;nom;commentaire;affichage;barre;gras;italique;souligne;defaut;affichage_liste;pourcentage;couleur;priorite
+abandon;Abandon;Abandon;tp;1;0;0;0;1;1;100;;4
+archive;Archivé;Archivé;p;1;0;0;0;1;1;100;;4
+a_faire;"A faire";"A faire";tp;0;0;0;0;1;1;0;;1
+en_cours;"En cours";"En cours";tp;0;0;0;0;1;1;50;;2
+fait;"Fait / terminé";"Fait / terminé";tp;1;0;0;0;1;1;100;;3
