@@ -3,7 +3,7 @@
 require('./base.inc');
 require(BASE . '/../config.inc');
 
-// phase de login auto avec param de l'url (car accès depuis calendrier externe)
+// phase de login auto avec param de l'url (car accï¿½s depuis calendrier externe)
 if(isset($_GET['login'])) {
 	if(!isset($_GET['hash'])) {
 		$_SESSION['message'] = 'erreur_bad_login';
@@ -17,15 +17,15 @@ if(isset($_GET['login'])) {
 		exit;
 	}
 
-	$hashUser = md5($user->login . '¤¤' . $user->password . '¤¤' . CONFIG_SECURE_KEY);
-	if($hashUser != $_GET['hash']) {
+	$hashUser = md5($user->login . 'ï¿½ï¿½' . $user->password . 'ï¿½ï¿½' . CONFIG_SECURE_KEY);
+	if(!hash_equals((string) $hashUser, (string) $_GET['hash'])) {
 		$_SESSION['message'] = 'erreur_bad_login';
 		header('Location: index');
 		exit;
 	}
 	//$_SESSION['user_id'] = $user->user_id;
 } else {
-	// accès normal depuis le site
+	// accï¿½s normal depuis le site
 	require BASE . '/../includes/header.inc';
 }
 
@@ -60,7 +60,7 @@ iCalUtilityFunctions::createTimezone( $v, date_default_timezone_get(), $xprops);
 $v->setProperty( 'X-PUBLISHED-TTL', 'PT30M');
 
 
-// recuperation des projets couvrant la période, pour le filtre de projets
+// recuperation des projets couvrant la pï¿½riode, pour le filtre de projets
 $projetsFiltre = new GCollection('Projet');
 $sql = "SELECT distinct pp.*, pg.nom AS groupe_nom
 		FROM planning_projet pp
@@ -70,18 +70,18 @@ if($user->checkDroit('tasks_view_specific_projects')) {
 	$sql .= " INNER JOIN planning_right_on_projet AS rop ON rop.allowed_id = pp.projet_id AND rop.owner_id = " . val2sql($user->user_id);
 }
 if ($user->checkDroit('tasks_view_team_projects') && !is_null($user->user_groupe_id)) {
-	// on filtre sur les projets de l'équipe de ce user
+	// on filtre sur les projets de l'ï¿½quipe de ce user
 	$sql .= " INNER JOIN planning_user AS pu ON pd.user_id = pu.user_id ";
 }
 if($user->checkDroit('tasks_view_specific_users')) {
 	$sql .= " INNER JOIN planning_right_on_user AS rou ON rou.allowed_id = pd.user_id AND rou.owner_id = " . val2sql($user->user_id);
 }
 if($user->checkDroit('tasks_view_own_projects')) {
-	// on filtre sur les projets dont le user courant est propriétaire ou assigné
+	// on filtre sur les projets dont le user courant est propriï¿½taire ou assignï¿½
 	$sql .= " AND (pp.createur_id = " . val2sql($user->user_id) . " OR pd.user_id = " . val2sql($user->user_id) . ")";
 }
 if ($user->checkDroit('tasks_view_team_projects') && !is_null($user->user_groupe_id)) {
-	// on filtre sur les projets de l'équipe de ce user
+	// on filtre sur les projets de l'ï¿½quipe de ce user
 	$sql .= " AND pu.user_groupe_id = " . val2sql($user->user_groupe_id);
 }
 if ($user->checkDroit('tasks_view_only_own')) {
@@ -114,7 +114,7 @@ while($lineTmp = $lines->fetch()) {
 	$nbLine++;
 	$ligneId = $lineTmp->projet_id;
 
-	// on charge les jours occupés pour cette ligne
+	// on charge les jours occupï¿½s pour cette ligne
 	$periodes = new GCollection('Periode');
 	$sql = "SELECT planning_periode.*, planning_user.*, planning_user.nom AS nom_user, planning_projet.nom AS nom_projet
 			FROM planning_periode
@@ -124,7 +124,7 @@ while($lineTmp = $lines->fetch()) {
 		$sql .= " INNER JOIN planning_right_on_projet AS rop ON rop.allowed_id = planning_periode.projet_id AND rop.owner_id = " . val2sql($user->user_id);
 	}
 	if ($user->checkDroit('tasks_view_team_projects') && !is_null($user->user_groupe_id)) {
-		// on filtre sur les projets de l'équipe de ce user
+		// on filtre sur les projets de l'ï¿½quipe de ce user
 		$sql .= " INNER JOIN planning_user AS pu ON planning_periode.user_id = pu.user_id ";
 	}
 	$sql .= "  WHERE planning_periode.projet_id = " . val2sql($ligneId);
@@ -144,14 +144,14 @@ while($lineTmp = $lines->fetch()) {
 		$sql .= " AND planning_periode.projet_id IN ('" . implode("','", $listeProjetsPossibles) . "')";
 	}
 	if ($user->checkDroit('tasks_view_team_projects') && !is_null($user->user_groupe_id)) {
-		// on filtre sur les projets de l'équipe de ce user
+		// on filtre sur les projets de l'ï¿½quipe de ce user
 		$sql .= " AND pu.user_groupe_id = " . val2sql($user->user_groupe_id);
 	}
 	if ($user->checkDroit('tasks_view_only_own')) {
 		$sql .= " AND planning_periode.user_id = " . val2sql($user->user_id);
 	}
 	if (isset($_GET['projets'])) {
-		// on filtre sur les projets de l'équipe de ce user
+		// on filtre sur les projets de l'ï¿½quipe de ce user
 		$liste = explode('-', $_GET['projets']);
 		$liste = validerTabProjets($liste);
 
@@ -161,7 +161,7 @@ while($lineTmp = $lines->fetch()) {
 		}
 	}
 	if (isset($_GET['users'])) {
-		// on filtre sur les projets de l'équipe de ce user
+		// on filtre sur les projets de l'ï¿½quipe de ce user
 		$liste = explode('-', str_replace(array("'", '"'), array('', ''), $_GET['users']));
 		$liste = validerTabUsers($liste);
 		if(count($liste) > 0) {
@@ -174,7 +174,7 @@ while($lineTmp = $lines->fetch()) {
 	//echo $sql . '<br>';
 
 	$joursOccupes = array();
-	// pour chaque période de cette ligne, on remplie le tableau des jours occupés
+	// pour chaque pï¿½riode de cette ligne, on remplie le tableau des jours occupï¿½s
 
 	while ($periode = $periodes->fetch()) {
 		$nomTache = $periode->nom_projet;

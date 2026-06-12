@@ -15,7 +15,7 @@ if (isset($_GET['public']) && (CONFIG_SOPLANNING_OPTION_ACCES == 1 || CONFIG_SOP
         break;
     // Public access with key
     case 2:
-        if ($_GET['cle'] != CONFIG_SECURE_KEY) {
+        if (!hash_equals((string) CONFIG_SECURE_KEY, (string) $_GET['cle'])) {
             unset($_SESSION['public']);
             unset($_SESSION['user_id']);
             break;

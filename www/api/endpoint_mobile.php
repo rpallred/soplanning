@@ -54,6 +54,9 @@ function verifyMobileToken($token) {
         throw new FailedAuthException('User not found');
     }
 
+    if (trim((string) $user->cle) === '') {
+        throw new FailedAuthException('Invalid token signature');
+    }
     $expected = hash_hmac('sha256', $user_id . '|' . $timestamp, $user->cle);
     if (!hash_equals($expected, $sig)) {
         throw new FailedAuthException('Invalid token signature');

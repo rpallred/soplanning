@@ -22,7 +22,7 @@ function checkAuth(){
 	if(!isset($_SERVER[$keyname])){
 		throw new FailedAuthException('API key not present');
 	}
-	if($_SERVER[$keyname] != CONFIG_SOPLANNING_API_KEY_VALUE){
+	if(!hash_equals((string) CONFIG_SOPLANNING_API_KEY_VALUE, (string) $_SERVER[$keyname])){
 		throw new FailedAuthException('API auth failed');
 	}
 	return;

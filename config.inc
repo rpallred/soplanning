@@ -112,7 +112,8 @@ header("X-Frame-Options: SAMEORIGIN");
 if (version_compare(PHP_VERSION, '7.3.0') >= 0) {
 	session_set_cookie_params([
 		'httponly' => true,
-		'samesite' => 'Lax'
+		'samesite' => 'Lax',
+		'secure' => (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
 	]);
 }
 session_start(['cookie_httponly' => true]);
