@@ -315,5 +315,81 @@ class Version
 		include_once($file);
 		return true;
 	}
+
+	/**
+	 * Create a fresh SQLite database for a portable/desktop install.
+	 *
+	 * Self-contained (uses raw PDO so it does not depend on the web bootstrap):
+	 * builds the schema from sql/planning_sqlite.sql, generates the security
+	 * secrets with a CSPRNG, and seeds an admin account plus the default task
+	 * statuses. No demo people/projects are created.
+	 *
+	 * @param  string $filePath  absolute path of the SQLite file to create
+	 * @return array  ['ok'=>bool, 'admin_password'=>string, 'error'=>string]
+	 */
+	public function installSqlite($filePath)
+	{
+		$schemaFile = BASE . '/../sql/planning_sqlite.sql';
+		if (!is_file($schemaFile)) {
+			return array('ok' => false, 'error' => 'schema file missing');
+		}
+		if (file_exists($filePath)) {
+			return array('ok' => false, 'error' => 'database file already exists');
+		}
+
+		try {
+			$pdo = new PDO('sqlite:' . $filePath, null, null, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+			$pdo->exec('PRAGMA foreign_keys=ON');
+			$pdo->exec($this->readSchema($schemaFile));
+
+			// security secrets (CSPRNG) — replace the empty seed values
+			$secureKey = bin2hex(random_bytes(32));
+			$apiKey = bin2hex(random_bytes(16));
+			$upd = $pdo->prepare('UPDATE planning_config SET valeur = ? WHERE cle = ?');
+			$upd->execute(array($secureKey, 'SECURE_KEY'));
+			$upd->execute(array($apiKey, 'SOPLANNING_API_KEY_VALUE'));
+			$upd->execute(array($this->getVersion(), 'CURRENT_VERSION'));
+
+			// admin account with a random password
+			$adminPassword = bin2hex(random_bytes(8));
+			$droits = '["users_manage_all", "projects_manage_all", "projectgroups_manage_all", "tasks_modify_all", "tasks_view_all_projects", "lieux_all", "ressources_all", "parameters_all", "stats_users", "stats_projects", "audit_restore", "stats_roi_projects"]';
+			$pdo->prepare('INSERT INTO planning_user (user_id, nom, login, password, droits, cle, visible_planning, notifications, login_actif, couleur, date_creation) VALUES (?,?,?,?,?,?,?,?,?,?,?)')
+				->execute(array('ADM', 'admin', 'admin', password_hash($adminPassword, PASSWORD_BCRYPT), $droits, bin2hex(random_bytes(16)), 'non', 'oui', 'oui', '000000', date('Y-m-d H:i:s')));
+
+			// the public/guest pseudo-user the app expects
+			$pdo->prepare('INSERT INTO planning_user (user_id, nom, visible_planning, notifications, login_actif, cle, couleur, date_creation) VALUES (?,?,?,?,?,?,?,?)')
+				->execute(array('publicspl', 'Guest', 'non', 'non', 'oui', bin2hex(random_bytes(16)), '000000', date('Y-m-d H:i:s')));
+
+			// default task statuses
+			$statuses = array(
+				array('todo', 'To do', 'tp', 0, 1, 1, '4dabf5'),
+				array('progress', 'In progress', 'tp', 50, 2, 0, 'ffc107'),
+				array('done', 'Done', 'tp', 100, 3, 0, '4caf50'),
+				array('abort', 'Aborted', 'tp', 0, 4, 0, 'f44336'),
+				array('archive', 'Archived', 'tp', 100, 5, 0, '9e9e9e'),
+			);
+			$st = $pdo->prepare('INSERT INTO planning_status (status_id, nom, affichage, pourcentage, priorite, defaut, couleur, inclure_dans_calcul) VALUES (?,?,?,?,?,?,?,?)');
+			foreach ($statuses as $s) {
+				$st->execute(array($s[0], $s[1], $s[2], $s[3], $s[4], $s[5], $s[6], 'oui'));
+			}
+
+			$pdo = null;
+			return array('ok' => true, 'admin_password' => $adminPassword, 'error' => '');
+		} catch (Exception $e) {
+			return array('ok' => false, 'error' => $e->getMessage());
+		}
+	}
+
+	// Read a .sql file, stripping leading "-- " comment lines.
+	private function readSchema($file)
+	{
+		$lines = file($file);
+		$out = array();
+		foreach ($lines as $l) {
+			if (preg_match('/^\s*--/', $l)) { continue; }
+			$out[] = $l;
+		}
+		return implode('', $out);
+	}
 }
 ?>
