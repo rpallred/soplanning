@@ -7,6 +7,13 @@
     "interval": "*/5 * * * *",
     "enabled": true,
     "php_bin": "/usr/bin/php8.1"
+    },
+    {
+    "name": "Book loan reminders (overdue / due soon)",
+    "task": "cron/cron_loan_reminders.php",
+    "interval": "0 8 * * *",
+    "enabled": true,
+    "php_bin": "/usr/bin/php8.1"
     }
   ]
 }

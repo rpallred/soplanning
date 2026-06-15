@@ -99,9 +99,11 @@ exit;
  */
 function notifyHoldAvailable($hold, $resourceId)
 {
-	if (empty($hold->user_id)) { return; }
+	// GObject magic props are unreliable with empty()/isset() (no __isset) — read locals.
+	$holdUserId = (string) $hold->user_id;
+	if ($holdUserId === '') { return; }
 	$u = new User();
-	if (!$u->db_load(array('user_id', '=', $hold->user_id)) || empty($u->email)) { return; }
+	if (!$u->db_load(array('user_id', '=', $holdUserId)) || (string) $u->email === '') { return; }
 	$book = new Ressource();
 	$book->db_load(array('ressource_id', '=', $resourceId));
 	$subject = 'A book you requested is now available';

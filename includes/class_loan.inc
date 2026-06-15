@@ -22,8 +22,9 @@ class Loan extends GObject
 	// A loan is overdue when it is still out and past its due date.
 	public function isOverdue()
 	{
-		return ($this->statut === 'out'
-			&& !empty($this->date_due)
-			&& $this->date_due < date('Y-m-d'));
+		// read magic props into locals (GObject has no __isset, so empty() is unreliable)
+		$statut = (string) $this->statut;
+		$due = (string) $this->date_due;
+		return ($statut === 'out' && $due !== '' && $due < date('Y-m-d'));
 	}
 }
