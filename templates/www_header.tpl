@@ -165,7 +165,23 @@
 					</div>
 				</li>
 			{/if}
-			{if in_array("stats_users", $user.tabDroits) || in_array("stats_projects", $user.tabDroits) || in_array("audit_restore_own", $user.tabDroits) || in_array("stats_roi_projects", $user.tabDroits) || in_array("audit_restore", $user.tabDroits)}	
+			{if in_array("parameters_all", $user.tabDroits)}
+				<li class="divider-vertical"></li>
+				<li class="nav-item dropdown">
+					<a class="nav-link" href="{$BASE}/completions" id="menuProgram" {if $smarty.session.isMobileOrTablet==1}data-toggle="dropdown"{/if} role="button">
+						<i class="fa fa-graduation-cap fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Program
+					</a>
+					<div class="dropdown-menu mt-0" aria-labelledby="menuProgram">
+						<a href="{$BASE}/completions" class="dropdown-item">
+							<i class="fa fa-check-square-o fa-lg fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;Completion Tracking
+						</a>
+						<a href="{$BASE}/requirements" class="dropdown-item">
+							<i class="fa fa-list-ul fa-lg fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;Manage Requirements
+						</a>
+					</div>
+				</li>
+			{/if}
+			{if in_array("stats_users", $user.tabDroits) || in_array("stats_projects", $user.tabDroits) || in_array("audit_restore_own", $user.tabDroits) || in_array("stats_roi_projects", $user.tabDroits) || in_array("audit_restore", $user.tabDroits)}
 				<li class="divider-vertical"></li>
 				<li class="nav-item dropdown">
 					<a class="nav-link" href="#" id="menuStats" role="button" {if $smarty.session.isMobileOrTablet==1}data-toggle="dropdown"{/if} aria-haspopup="true" data-target="#menuStatsToggle" aria-expanded="true">
