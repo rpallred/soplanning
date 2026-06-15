@@ -6,3 +6,5 @@ mutex_file.txt
 smarty/templates_c/*
 www/upload/files/*
 !www/upload/files/.htaccess
+build/mac/
+build/dist/
