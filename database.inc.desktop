@@ -1,0 +1,43 @@
+<?php
+// Desktop / portable build database config.
+// The packaging step copies this file to database.inc.
+//
+// The data location is chosen at runtime and stored in data-location.json
+// (see includes/desktop.inc); the SQLite file itself lives in the user's
+// synced folder, with backups and a single-instance lock beside it.
+
+require_once BASE . '/../includes/desktop.inc';
+
+$cfgSqlType  = 'sqlite';
+$cfgDatabase = 'soplanning';
+$cfgPrefix   = 'planning_';
+$cfgHostname = '';
+$cfgUsername = '';
+$cfgPassword = '';
+$cfgSqliteFile = desktop_get_data_path();
+
+$__uri = $_SERVER['REQUEST_URI'] ?? '';
+$__isSetup = (strpos($__uri, '/setup') !== false);
+
+if ($cfgSqliteFile === null || !is_file($cfgSqliteFile)) {
+	// Not configured yet -> first-run setup (setup pages bypass this bootstrap).
+	if (!$__isSetup) {
+		header('Location: ' . BASE . '/setup');
+		exit;
+	}
+} elseif (!$__isSetup) {
+	// Single-instance guard: refuse if another machine currently holds the file.
+	$__holder = desktop_check_lock($cfgSqliteFile);
+	if ($__holder && ($__holder['host'] ?? '') !== gethostname()) {
+		header('Content-Type: text/html; charset=utf-8');
+		echo '<!doctype html><meta charset="utf-8"><title>In use</title>'
+		   . '<div style="font-family:sans-serif;max-width:600px;margin:60px auto">'
+		   . '<h2>This data file is open on another computer</h2>'
+		   . '<p>SOPlanning is currently open on <b>' . htmlspecialchars($__holder['host']) . '</b>. '
+		   . 'To avoid corrupting your synced data file, close it there first, let OneDrive '
+		   . 'finish syncing, then reload.</p><p><a href="' . BASE . '/">Reload</a></p></div>';
+		exit;
+	}
+	desktop_acquire_lock($cfgSqliteFile);
+	desktop_backup($cfgSqliteFile);
+}

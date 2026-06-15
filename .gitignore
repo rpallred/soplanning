@@ -1,5 +1,6 @@
 database.inc
 database.inc.hosted-backup
+data-location.json
 debug.txt
 mutex_file.txt
 smarty/templates_c/*
