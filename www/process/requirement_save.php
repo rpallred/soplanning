@@ -33,7 +33,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['requi
 // Add a new requirement
 $libelle = trim($_POST['libelle'] ?? '');
 $type = $_POST['response_type'] ?? 'bool';
-if ($cohortId > 0 && $libelle !== '' && in_array($type, array('date', 'bool', 'link', 'file'), true)) {
+if ($cohortId > 0 && $libelle !== '' && in_array($type, array('date', 'bool', 'link', 'file', 'number'), true)) {
 	// next order = max+1 in this cohort
 	$res = db_query("SELECT MAX(ordre) AS m FROM planning_requirement WHERE cohort_id = " . val2sql($cohortId));
 	$row = db_fetch_array($res);
@@ -43,6 +43,9 @@ if ($cohortId > 0 && $libelle !== '' && in_array($type, array('date', 'bool', 'l
 	$req->cohort_id = $cohortId;
 	$req->libelle = $libelle;
 	$req->response_type = $type;
+	// optional target, only meaningful for the number type
+	$cible = trim($_POST['cible'] ?? '');
+	if ($type === 'number' && $cible !== '' && ctype_digit($cible)) { $req->cible = (int) $cible; }
 	$req->ordre = $next;
 	$req->actif = 'oui';
 	$req->db_save();

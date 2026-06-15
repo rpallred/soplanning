@@ -64,6 +64,11 @@ foreach ($members as $m) {
 			switch ($req['response_type']) {
 				case 'bool': $done = ($comp['valeur'] === 'yes'); $display = $done ? 'Yes' : 'No'; break;
 				case 'date': $done = !empty($comp['valeur']); $display = $comp['valeur']; break;
+				case 'number':
+					$done = (isset($comp['valeur']) && $comp['valeur'] !== '' && (int) $comp['valeur'] > 0);
+					$display = $comp['valeur'];
+					if (!empty($req['cible'])) { $display .= '/' . $req['cible']; }
+					break;
 				case 'link': $done = !empty($comp['valeur']); $display = $done ? 'Link' : ''; break;
 				case 'file': $done = !empty($comp['fichier']); $display = $done ? 'File' : ''; break;
 			}

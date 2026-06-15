@@ -28,6 +28,9 @@
 										</select>
 									{elseif $it.response_type == 'date'}
 										<input type="date" name="value_{$it.requirement_id}" class="form-control" value="{$it.valeur|escape}">
+									{elseif $it.response_type == 'number'}
+										<input type="number" name="value_{$it.requirement_id}" class="form-control" min="0" value="{$it.valeur|escape}" style="width:120px;">
+										{if $it.cible}<span class="text-muted">&nbsp;of {$it.cible}</span>{/if}
 									{elseif $it.response_type == 'link'}
 										<input type="url" name="value_{$it.requirement_id}" class="form-control" placeholder="https://..." value="{$it.valeur|escape}">
 									{elseif $it.response_type == 'file'}

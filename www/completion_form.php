@@ -38,6 +38,7 @@ while ($req = db_fetch_array($res)) {
 		'requirement_id' => $req['requirement_id'],
 		'libelle' => $req['libelle'],
 		'response_type' => $req['response_type'],
+		'cible' => $req['cible'],
 		'valeur' => $loaded ? $comp->valeur : '',
 		'fichier' => $loaded ? $comp->fichier : '',
 		'date_completion' => $loaded ? $comp->date_completion : '',

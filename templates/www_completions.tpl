@@ -37,7 +37,7 @@
 								{foreach item=cell from=$row.cells}
 									<td class="text-center">
 										{if $cell.done}
-											{if $cell.type == 'date'}<small>{$cell.display}</small>
+											{if $cell.type == 'date' || $cell.type == 'number'}<small>{$cell.display}</small>
 											{else}<i class="fa fa-check text-success" title="{$cell.display}"></i>{/if}
 										{else}
 											<span class="text-muted">&mdash;</span>

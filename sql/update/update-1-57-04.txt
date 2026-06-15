@@ -1,0 +1,8 @@
+-- Feature 1 extension: 'number' response type (integer count) with optional target
+-- New in 1.57.00-hardened.1
+
+ALTER TABLE `planning_requirement`
+  MODIFY `response_type` ENUM('date','bool','link','file','number') COLLATE latin1_general_ci NOT NULL DEFAULT 'bool';
+
+ALTER TABLE `planning_requirement`
+  ADD COLUMN `cible` INT NULL DEFAULT NULL;
