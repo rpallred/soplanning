@@ -2,7 +2,10 @@
 
 This instance is based on the official SOPlanning 1.56.00 release with the
 following local security fixes applied (see git log for full details).
-The running version is displayed as **1.56.00-hardened.1** on the login page.
+The running version is displayed as **1.57.00-hardened.1** on the login page.
+(The `1.57` line adds the program features — completion tracking, book
+checkout/check-in, and supervision functions + coverage — on top of the
+hardened 1.56 base; see `sql/update/update-1-57-*.txt`.)
 
 | Fix | Files | Commit |
 |---|---|---|
