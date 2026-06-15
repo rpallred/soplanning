@@ -1,0 +1,34 @@
+-- Feature 3: Supervision functions + coverage
+-- New in 1.57.00-hardened.1
+
+CREATE TABLE `planning_supervision` (
+  `sup_id` INT NOT NULL AUTO_INCREMENT,
+  `trainee_id` VARCHAR(20) COLLATE latin1_general_ci NOT NULL,
+  `fonction` ENUM('assigned','individual','notes') COLLATE latin1_general_ci NOT NULL DEFAULT 'assigned',
+  `supervisor_ref` VARCHAR(20) COLLATE latin1_general_ci NOT NULL,
+  `date_debut` DATE NOT NULL,
+  `date_fin` DATE NULL DEFAULT NULL,
+  `jour_semaine` TINYINT NULL DEFAULT NULL,
+  `heure_debut` TIME NULL DEFAULT NULL,
+  `heure_fin` TIME NULL DEFAULT NULL,
+  `actif` ENUM('oui','non') COLLATE latin1_general_ci NOT NULL DEFAULT 'oui',
+  PRIMARY KEY (`sup_id`),
+  KEY `idx_sup_trainee` (`trainee_id`),
+  KEY `idx_sup_fonction` (`fonction`),
+  CONSTRAINT `fk_sup_trainee` FOREIGN KEY (`trainee_id`) REFERENCES `planning_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_sup_supervisor` FOREIGN KEY (`supervisor_ref`) REFERENCES `planning_ressource` (`ressource_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+CREATE TABLE `planning_supervision_coverage` (
+  `cov_id` INT NOT NULL AUTO_INCREMENT,
+  `trainee_id` VARCHAR(20) COLLATE latin1_general_ci NOT NULL,
+  `fonction` ENUM('assigned','individual','notes','all') COLLATE latin1_general_ci NOT NULL DEFAULT 'all',
+  `covering_ref` VARCHAR(20) COLLATE latin1_general_ci NOT NULL,
+  `date_debut` DATE NOT NULL,
+  `date_fin` DATE NOT NULL,
+  `note` VARCHAR(255) COLLATE latin1_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`cov_id`),
+  KEY `idx_cov_trainee` (`trainee_id`),
+  CONSTRAINT `fk_cov_trainee` FOREIGN KEY (`trainee_id`) REFERENCES `planning_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_cov_supervisor` FOREIGN KEY (`covering_ref`) REFERENCES `planning_ressource` (`ressource_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
