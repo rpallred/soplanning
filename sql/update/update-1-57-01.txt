@@ -1,0 +1,36 @@
+-- Feature 1: Completion tracking (two cohort-scoped checklists)
+-- New in 1.57.00-hardened.1
+
+ALTER TABLE `planning_user` ADD COLUMN `cohort_id` INT NULL DEFAULT NULL;
+
+CREATE TABLE `planning_cohort` (
+  `cohort_id` INT NOT NULL AUTO_INCREMENT,
+  `libelle` VARCHAR(100) COLLATE latin1_general_ci NOT NULL DEFAULT '',
+  `annee` VARCHAR(20) COLLATE latin1_general_ci NULL DEFAULT NULL,
+  `population` ENUM('trainee','supervisor') COLLATE latin1_general_ci NOT NULL DEFAULT 'trainee',
+  PRIMARY KEY (`cohort_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+CREATE TABLE `planning_requirement` (
+  `requirement_id` INT NOT NULL AUTO_INCREMENT,
+  `cohort_id` INT NOT NULL,
+  `libelle` VARCHAR(255) COLLATE latin1_general_ci NOT NULL DEFAULT '',
+  `response_type` ENUM('date','bool','link','file') COLLATE latin1_general_ci NOT NULL DEFAULT 'bool',
+  `ordre` INT NULL DEFAULT 0,
+  `actif` ENUM('oui','non') COLLATE latin1_general_ci NOT NULL DEFAULT 'oui',
+  PRIMARY KEY (`requirement_id`),
+  KEY `idx_req_cohort` (`cohort_id`),
+  CONSTRAINT `fk_requirement_cohort` FOREIGN KEY (`cohort_id`) REFERENCES `planning_cohort` (`cohort_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+CREATE TABLE `planning_requirement_completion` (
+  `requirement_id` INT NOT NULL,
+  `subject_type` ENUM('user','resource') COLLATE latin1_general_ci NOT NULL DEFAULT 'user',
+  `subject_id` VARCHAR(20) COLLATE latin1_general_ci NOT NULL,
+  `valeur` VARCHAR(255) COLLATE latin1_general_ci NULL DEFAULT NULL,
+  `fichier` VARCHAR(255) COLLATE latin1_general_ci NULL DEFAULT NULL,
+  `date_completion` DATETIME NULL DEFAULT NULL,
+  `completed_by` VARCHAR(20) COLLATE latin1_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`requirement_id`,`subject_type`,`subject_id`),
+  CONSTRAINT `fk_completion_requirement` FOREIGN KEY (`requirement_id`) REFERENCES `planning_requirement` (`requirement_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;

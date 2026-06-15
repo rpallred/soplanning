@@ -35,7 +35,8 @@ class User extends GObject
 		$this->fields['tutoriel'] = new GString('planning_user', 'tutoriel', 255, TRUE, NULL);
 		$this->fields['tarif_horaire_defaut'] = new GFloat('planning_user', 'tarif_horaire_defaut', 20, TRUE, NULL);
 		$this->fields['langue'] = new GString('planning_user', 'langue', 2, TRUE, NULL);
-		
+		$this->fields['cohort_id'] = new GInteger('planning_user', 'cohort_id', 11, TRUE, NULL);
+
 		$this->primaryKeys = array('user_id');
 		parent::__construct();
 	}
@@ -118,7 +119,7 @@ class User extends GObject
 
 	public function lienIcal($anciennete, $users = array(), $projets = array()) {
 		$urlSuggeree = (CONFIG_SOPLANNING_URL != '' ? CONFIG_SOPLANNING_URL : '');
-		$lienIcal = $urlSuggeree . '/export_ical?login=' . $this->login . '&hash=' . md5($this->login . '¤¤' . $this->password . '¤¤' . CONFIG_SECURE_KEY) . "&nocache";
+		$lienIcal = $urlSuggeree . '/export_ical?login=' . $this->login . '&hash=' . md5($this->login . 'ï¿½ï¿½' . $this->password . 'ï¿½ï¿½' . CONFIG_SECURE_KEY) . "&nocache";
 		if(count($users) > 0) {
 			$lienIcal .= '&users=' . implode('-', $users);
 		}
@@ -433,7 +434,7 @@ class User extends GObject
 	}
 
 	private function hashPasswordLegacy($password){
-		return sha1("¤" . $password . "¤");
+		return sha1("ï¿½" . $password . "ï¿½");
 	}
 
 	public function verifyPassword($plainPassword, $storedHash){
@@ -496,8 +497,8 @@ class User extends GObject
 	}
 
 	public function checkLangueDefaut() {
-		// on check si la langue est définie pour cette personne/destinataire
-		// si non définit on prend par défaut la langue du premier admin qu'on trouve
+		// on check si la langue est dï¿½finie pour cette personne/destinataire
+		// si non dï¿½finit on prend par dï¿½faut la langue du premier admin qu'on trouve
 		if (!is_null($this->langue)) {
 			return true;
 		}
@@ -507,7 +508,7 @@ class User extends GObject
 			$this->langue = $userTmp->langue;
 			$this->db_save();
 		} else {
-			// fr par défaut
+			// fr par dï¿½faut
 			$this->langue = 'fr';
 			$this->db_save();
 		}
