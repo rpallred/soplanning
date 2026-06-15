@@ -178,6 +178,10 @@
 						<a href="{$BASE}/requirements" class="dropdown-item">
 							<i class="fa fa-list-ul fa-lg fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;Manage Requirements
 						</a>
+						<div class="dropdown-divider"></div>
+						<a href="{$BASE}/checkout" class="dropdown-item">
+							<i class="fa fa-book fa-lg fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;Book Library
+						</a>
 					</div>
 				</li>
 			{/if}
