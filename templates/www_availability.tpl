@@ -22,6 +22,18 @@
 					blackout ranges block it entirely.
 				</p>
 
+				<h5>Limits</h5>
+				<form method="POST" action="{$BASE}/process/availability_save" class="form-inline" style="margin-bottom:25px;">
+					<input type="hidden" name="crsf" value="{$smarty.session.CRSF}">
+					<input type="hidden" name="action" value="set_limits">
+					<input type="hidden" name="resource_id" value="{$selected|escape}">
+					<label>Max loan duration (days) for this resource:&nbsp;</label>
+					<input type="number" name="quota_max_jours" class="form-control" min="0" style="width:90px;" value="{$quotaMaxJours|escape}" placeholder="none">
+					&nbsp;&nbsp;<label>Max books out per borrower (all books, 0 = unlimited):&nbsp;</label>
+					<input type="number" name="loan_max_per_user" class="form-control" min="0" style="width:90px;" value="{$loanMaxPerUser|escape}">
+					&nbsp;<button type="submit" class="btn btn-primary">Save limits</button>
+				</form>
+
 				<h5>Weekly windows</h5>
 				<table class="table table-sm table-striped">
 					<thead><tr><th>Day</th><th>From</th><th>To</th><th style="width:50px;"></th></tr></thead>

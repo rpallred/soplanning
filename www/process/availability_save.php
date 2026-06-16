@@ -53,6 +53,25 @@ switch ($action) {
 		}
 		break;
 
+	case 'set_limits':
+		if ($resourceId !== '') {
+			// targeted UPDATE (avoids re-validating the whole resource row)
+			$mj = trim($_POST['quota_max_jours'] ?? '');
+			$val = ($mj !== '' && ctype_digit($mj) && (int) $mj > 0) ? (string) (int) $mj : 'NULL';
+			db_query("UPDATE planning_ressource SET quota_max_jours = $val WHERE ressource_id = " . val2sql($resourceId));
+			// global limit lives in planning_config
+			$mpu = trim($_POST['loan_max_per_user'] ?? '');
+			if ($mpu !== '' && ctype_digit($mpu)) {
+				$cfg = new Config();
+				if ($cfg->db_load(array('cle', '=', 'LOAN_MAX_ACTIVE_PER_USER'))) {
+					$cfg->valeur = (int) $mpu;
+					$cfg->db_save();
+				}
+			}
+			$_SESSION['message'] = 'traitementOK';
+		}
+		break;
+
 	case 'delete':
 		$a = new Availability();
 		if ($a->db_load(array('avail_id', '=', (int) ($_GET['avail_id'] ?? 0)))) {

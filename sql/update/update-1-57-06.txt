@@ -1,0 +1,7 @@
+-- LibreBooking-style features, part 2: quotas / limits
+-- New in 1.57.00-hardened.1
+
+ALTER TABLE `planning_ressource` ADD COLUMN `quota_max_jours` INT NULL DEFAULT NULL;
+
+INSERT INTO `planning_config`(`cle`, `valeur`, `commentaire`)
+  VALUES ('LOAN_MAX_ACTIVE_PER_USER', '0', 'Max active book loans per borrower (0 = unlimited)');

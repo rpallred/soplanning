@@ -44,6 +44,15 @@ if ($selected !== '') {
 	}
 }
 
+// Limits: this resource's max loan duration + the global max active loans per borrower
+$quotaMaxJours = '';
+if ($selected !== '') {
+	$r = new Ressource();
+	if ($r->db_load(array('ressource_id', '=', $selected))) { $quotaMaxJours = $r->quota_max_jours; }
+}
+$smarty->assign('quotaMaxJours', $quotaMaxJours);
+$smarty->assign('loanMaxPerUser', defined('CONFIG_LOAN_MAX_ACTIVE_PER_USER') ? CONFIG_LOAN_MAX_ACTIVE_PER_USER : 0);
+
 $smarty->assign('resources', $resources);
 $smarty->assign('selected', $selected);
 $smarty->assign('resourceName', $resourceName);

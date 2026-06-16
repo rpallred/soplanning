@@ -31,8 +31,33 @@ switch ($action) {
 		// Guard: refuse if the requested dates clash with the resource's availability rules.
 		$dateOut = date('Y-m-d');
 		$conflict = ($resourceId !== '') ? Availability::bookingConflict($resourceId, $dateOut, ($due !== '' ? $due : $dateOut)) : '';
+
+		// Quota: max loan duration for this resource
+		$quotaMsg = '';
+		if ($resourceId !== '' && $due !== '') {
+			$book = new Ressource();
+			if ($book->db_load(array('ressource_id', '=', $resourceId))) {
+				$maxJours = (int) $book->quota_max_jours;
+				if ($maxJours > 0) {
+					$span = (strtotime($due) - strtotime($dateOut)) / 86400;
+					if ($span > $maxJours) {
+						$quotaMsg = 'the loan exceeds the ' . $maxJours . '-day limit for this resource';
+					}
+				}
+			}
+		}
+		// Quota: max active loans per borrower (global, 0 = unlimited)
+		if ($quotaMsg === '' && $userId !== '' && (int) CONFIG_LOAN_MAX_ACTIVE_PER_USER > 0) {
+			$cnt = db_fetch_array(db_query("SELECT COUNT(*) AS n FROM planning_loan WHERE user_id = " . val2sql($userId) . " AND statut = 'out'"));
+			if ((int) $cnt['n'] >= (int) CONFIG_LOAN_MAX_ACTIVE_PER_USER) {
+				$quotaMsg = 'this borrower already has the maximum of ' . (int) CONFIG_LOAN_MAX_ACTIVE_PER_USER . ' books out';
+			}
+		}
+
 		if ($conflict !== '') {
 			$_SESSION['erreur'] = 'Cannot check out: resource ' . $conflict . '.';
+		} elseif ($quotaMsg !== '') {
+			$_SESSION['erreur'] = 'Cannot check out: ' . $quotaMsg . '.';
 		} elseif ($resourceId !== '' && db_num_rows($res) === 0) {
 			$loan = new Loan();
 			$loan->resource_id = $resourceId;
