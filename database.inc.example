@@ -1,0 +1,16 @@
+<?php
+// Template for database.inc — copy this file to database.inc and fill in your
+// own values. The real database.inc is git-ignored (it holds the DB password)
+// so it never gets committed or lost during branch operations.
+//
+//   cp database.inc.example database.inc   # then edit the values below
+//
+// For the SQLite/desktop build, see database.inc.desktop instead.
+
+$cfgHostname = 'localhost';
+$cfgDatabase = 'soplanning';
+$cfgUsername = 'soplanning';
+$cfgPassword = 'CHANGE_ME';
+$cfgSqlType  = 'mysql';
+$cfgPrefix   = 'planning_';
+?>
