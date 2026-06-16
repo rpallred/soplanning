@@ -1,7 +1,7 @@
 {* Smarty *}
 
 <form class="form-horizontal" method="post" action="" onsubmit="return false;" name="formUser" autocomplete="off">
-{* pour tester si compte déjà existant ou pas *}
+{* pour tester si compte dï¿½jï¿½ existant ou pas *}
 <input type="hidden" id="user_id_origine" value="{$user_form.user_id}">
 <div class="container-fluid">
 	<div class="form-group row col-md-12">
@@ -308,6 +308,13 @@
 				</div>
 			</div>
 			{/if}
+			<div class="row">
+				<label class="col-form-label col-md-3">Self-service :</label>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="checkbox" name="self_service" id="self_service" value="self_service" {if in_array("self_service", $user_form.tabDroits)}checked="checked"{/if}>
+					<label class="form-check-label" for="self_service">Allow this user to request books / resources themselves</label>
+				</div>
+			</div>
 		</div>
 		<div class="tab-pane fade" id="perso">
 			<div class="form-group row">
@@ -392,7 +399,7 @@
 				</div>
 				<label class="col-form-label col-md-3">{#user_tarif_horaire_defaut#} :</label>
 				<div class="form-check form-check-inline">
-					<input id="tarif_horaire_defaut" class="form-control" type="text" value="{$user_form.tarif_horaire_defaut|xss_protect}" maxlength="20" style="width:80px" />&nbsp;€
+					<input id="tarif_horaire_defaut" class="form-control" type="text" value="{$user_form.tarif_horaire_defaut|xss_protect}" maxlength="20" style="width:80px" />&nbsp;ï¿½
 				</div>
 			</div>
 
@@ -450,7 +457,7 @@
 	</div>
 	</div>
 	<div class="form-group col-md-12 text-center">
-				<input type="button" class="btn btn-primary" value="{#enregistrer#}" onClick="specific_users_ids=getSelectValue('specific_user_id');xajax_submitFormUser($('#user_id').val(), $('#user_id_origine').val(), $('#user_groupe_id').val(), $('#nom').val(), $('#email_user').val(), $('#tmp_lo').val(), $('#tmp_pa').val(), $('#visible_planningOui').is(':checked'), {if $smarty.const.CONFIG_PROJECT_COLORS_POSSIBLE neq ""}$('#couleur2 option:selected').val(){else}$('#couleur_user').val(){/if}, $('#notificationsOui').is(':checked'), $('#envoiMailPwd').is(':checked'), new Array(getRadioValue('users_manage'), getRadioValue('projects_manage'), getRadioValue('projectgroups_manage'), getRadioValue('planning_modif'), getRadioValue('planning_view'), getRadioValue('planning_view_users'), getRadioValue('lieux'), getRadioValue('ressources'), getRadioValue('audit'), getRadioValue('parameters'), ($('#stats_users').is(':checked') ? $('#stats_users').val() : ''), ($('#stats_projects').is(':checked') ? $('#stats_projects').val() : ''), ($('#stats_roi_projects').is(':checked') ? $('#stats_roi_projects').val() : '')), $('#user_adress').val(), $('#user_phone').val(),$('#user_mobile').val(), $('#user_metier').val(), $('#user_comment').val(), $('#login_actifOui').is(':checked'), specific_users_ids, $('#google_2fa_reset').is(':checked'), $('#tarif_horaire_defaut').val(), getSelectValue('specific_projet_id'), $('#langue').val());" />
+				<input type="button" class="btn btn-primary" value="{#enregistrer#}" onClick="specific_users_ids=getSelectValue('specific_user_id');xajax_submitFormUser($('#user_id').val(), $('#user_id_origine').val(), $('#user_groupe_id').val(), $('#nom').val(), $('#email_user').val(), $('#tmp_lo').val(), $('#tmp_pa').val(), $('#visible_planningOui').is(':checked'), {if $smarty.const.CONFIG_PROJECT_COLORS_POSSIBLE neq ""}$('#couleur2 option:selected').val(){else}$('#couleur_user').val(){/if}, $('#notificationsOui').is(':checked'), $('#envoiMailPwd').is(':checked'), new Array(getRadioValue('users_manage'), getRadioValue('projects_manage'), getRadioValue('projectgroups_manage'), getRadioValue('planning_modif'), getRadioValue('planning_view'), getRadioValue('planning_view_users'), getRadioValue('lieux'), getRadioValue('ressources'), getRadioValue('audit'), getRadioValue('parameters'), ($('#stats_users').is(':checked') ? $('#stats_users').val() : ''), ($('#stats_projects').is(':checked') ? $('#stats_projects').val() : ''), ($('#stats_roi_projects').is(':checked') ? $('#stats_roi_projects').val() : ''), ($('#self_service').is(':checked') ? $('#self_service').val() : '')), $('#user_adress').val(), $('#user_phone').val(),$('#user_mobile').val(), $('#user_metier').val(), $('#user_comment').val(), $('#login_actifOui').is(':checked'), specific_users_ids, $('#google_2fa_reset').is(':checked'), $('#tarif_horaire_defaut').val(), getSelectValue('specific_projet_id'), $('#langue').val());" />
 		</div>
 	</div>
 </div>
