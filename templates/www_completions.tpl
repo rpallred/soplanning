@@ -54,8 +54,12 @@
 								</td>
 								{foreach item=cell from=$row.cells}
 									<td class="text-center">
-										{if $cell.done}
-											{if $cell.type == 'date' || $cell.type == 'number'}<small>{$cell.display}</small>
+										{if $cell.type == 'number'}
+											{if $cell.display != ''}
+												<small class="{if $cell.done}text-success font-weight-bold{elseif $cell.partial}text-warning{else}text-muted{/if}">{$cell.display}{if $cell.done}&nbsp;<i class="fa fa-check"></i>{/if}</small>
+											{else}<span class="text-muted">&mdash;</span>{/if}
+										{elseif $cell.done}
+											{if $cell.type == 'date'}<small>{$cell.display}</small>
 											{else}<i class="fa fa-check text-success" title="{$cell.display}"></i>{/if}
 										{else}
 											<span class="text-muted">&mdash;</span>

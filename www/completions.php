@@ -59,22 +59,27 @@ foreach ($members as $m) {
 	foreach ($reqRows as $req) {
 		$comp = $completions[$m['id']][$req['requirement_id']] ?? null;
 		$done = false;
-		$display = '';
+		$partial = false;
+			$display = '';
 		if ($comp !== null) {
 			switch ($req['response_type']) {
 				case 'bool': $done = ($comp['valeur'] === 'yes'); $display = $done ? 'Yes' : 'No'; break;
 				case 'date': $done = !empty($comp['valeur']); $display = $comp['valeur']; break;
 				case 'number':
-					$done = (isset($comp['valeur']) && $comp['valeur'] !== '' && (int) $comp['valeur'] > 0);
-					$display = $comp['valeur'];
-					if (!empty($req['cible'])) { $display .= '/' . $req['cible']; }
+					$val = (isset($comp['valeur']) && $comp['valeur'] !== '') ? (int) $comp['valeur'] : null;
+					$target = !empty($req['cible']) ? (int) $req['cible'] : null;
+					if ($val !== null) {
+						$display = $target ? ($val . '/' . $target) : (string) $val;
+						if ($target) { $done = ($val >= $target); $partial = (!$done && $val > 0); }
+						else { $done = ($val > 0); }
+					}
 					break;
 				case 'link': $done = !empty($comp['valeur']); $display = $done ? 'Link' : ''; break;
 				case 'file': $done = !empty($comp['fichier']); $display = $done ? 'File' : ''; break;
 			}
 		}
 		if ($done) { $doneCount++; }
-		$cells[] = array('done' => $done, 'display' => $display, 'type' => $req['response_type']);
+		$cells[] = array('done' => $done, 'partial' => $partial, 'display' => $display, 'type' => $req['response_type']);
 	}
 	$matrix[] = array(
 		'id' => $m['id'],
