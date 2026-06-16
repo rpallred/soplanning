@@ -113,6 +113,19 @@
 				</optgroup></select>
 			</form>
 		</div>
+		{* DIV POUR CHOIX FILTRE COHORTE *}
+		{if $cohortsFiltre|@count > 0}
+		<div class="btn-group pt-2" id="dropdownTaskCohortFilter">
+			<form action="process/planning" method="POST" class="form-inline">
+				<select name="filtreCohort[]" class="form-control{if $filtreCohort|@count > 0} btn-danger{/if}" onchange="this.form.submit()" title="{#filtrer#} (cohort)" style="height:38px;">
+					<option value="">{if $filtreCohort|@count > 0}&#9733; {/if}All cohorts</option>
+					{foreach from=$cohortsFiltre item=coCourant}
+						<option value="{$coCourant.cohort_id}" {if in_array($coCourant.cohort_id, $filtreCohort)}selected="selected"{/if}>{$coCourant.libelle|xss_protect}</option>
+					{/foreach}
+				</select>
+			</form>
+		</div>
+		{/if}
 		{* DIV POUR CHOIX FILTRE PROJETS *}
 		<div class="btn-group pt-2" id="dropdownTaskProjectFilter">
 			<form action="process/planning" method="POST">
@@ -170,7 +183,7 @@
 								</div>
 							</td>
 
-							{* Filtres avancés emplacement *}
+							{* Filtres avancï¿½s emplacement *}
 							{if $smarty.const.CONFIG_SOPLANNING_OPTION_LIEUX == 1 and ($listeLieux|@count) > 0 }
 								<td class="planningDropdownFilter">
 								<input type="hidden" name="filtreGroupeLieu" value="1">
@@ -196,7 +209,7 @@
 								</td>
 							{/if}
 
-							{* Filtres avancés ressources *}
+							{* Filtres avancï¿½s ressources *}
 							{if $smarty.const.CONFIG_SOPLANNING_OPTION_RESSOURCES == 1 and ($listeRessources|@count) > 0 }
 								<td class="planningDropdownFilter">
 								<input type="hidden" name="maxGroupeRessource" value="{$listeRessources|@count}">
@@ -333,7 +346,7 @@
 	</div>
 </div>
 
-{* DIV POUR CHOIX AFFICHAGE - déplacé au bon endroit au chargement de la page *}
+{* DIV POUR CHOIX AFFICHAGE - dï¿½placï¿½ au bon endroit au chargement de la page *}
 <div class="d-nonez" id="dropdownDisplayPlanning">
 	<button class="dropdown-toggle boutonAffichagePlanning" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static" ><i class="fa fa-calendar fa-lg fa-fw" aria-hidden="true"></i><span class="d-none d-md-inline-block">&nbsp;&nbsp;{#planning_affichage#}</span>&nbsp;<span class="caret"></span></button>
 	<div class="dropdown-menu">

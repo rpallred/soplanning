@@ -3,7 +3,7 @@
 // Init des variables
 $html = '';
 $js = '';
-// jours fériés
+// jours fï¿½riï¿½s
 $joursFeries = getJoursFeries();
 // Jours inclus
 $DAYS_INCLUDED = getDaysIncluded();
@@ -41,7 +41,7 @@ if ($base_ligne=="users") {
 // Autres variables
 $droitAjoutPeriode = false;
 $_SESSION['lastURL'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-// Conversion de la durée maximale du jour en quantième
+// Conversion de la durï¿½e maximale du jour en quantiï¿½me
 $TotalMaxJourExplode= explode (':',CONFIG_DURATION_DAY);
 $TotalMaxJourH = $TotalMaxJourExplode[0];
 if(count($TotalMaxJourExplode) > 1) {
@@ -51,13 +51,13 @@ if(count($TotalMaxJourExplode) > 1) {
 }
 $TotalMaxJour = ($TotalMaxJourH+$TotalMaxJourM/60);
 
-// PARAMÈTRES ET FILTRES ////////////////////////////////
+// PARAMï¿½TRES ET FILTRES ////////////////////////////////
 
 // Variables de base pour le calcul des jours du planning
 // Aujourd'hui
 $now = new DateTime();
 
-// Date de début d'affichage du planning
+// Date de dï¿½but d'affichage du planning
 $dateDebut = new DateTime();
 $dateFin = new DateTime();
 
@@ -120,7 +120,7 @@ $smarty->assign('dateToday', $dateToday->format(CONFIG_DATE_LONG));
 $nbJours = getNbJoursFull($dateDebut->format('Y-m-d'), $dateFin->format('Y-m-d'));
 $smarty->assign('nbJours', $nbJours);
 
-// Période précédente et suivante
+// Pï¿½riode prï¿½cï¿½dente et suivante
 $dateBoutonInferieur = clone $dateDebut;
 $dateBoutonInferieur->modify('-' . $nbJours . 'days');
 $smarty->assign('dateBoutonInferieur', $dateBoutonInferieur->format(CONFIG_DATE_LONG));
@@ -129,7 +129,7 @@ $dateBoutonSuperieur->modify('+' . $nbJours . 'days');
 $smarty->assign('dateBoutonSuperieur', $dateBoutonSuperieur->format(CONFIG_DATE_LONG));
 
 // Date de livraison
-// si param livraison existe, veut dire qu'on vient des projets et qu'on affiche la semaine demandée
+// si param livraison existe, veut dire qu'on vient des projets et qu'on affiche la semaine demandï¿½e
 if(isset($_GET['livraison'])) {
 	if($_GET['livraison'] != '') {
 		$dateDebut = initDateTime($_GET['livraison']);
@@ -180,7 +180,7 @@ if(isset($_COOKIE['filtreGroupeRessource'])) {
 }
 $smarty->assign('filtreGroupeRessource', $_SESSION['filtreGroupeRessource']);
 
-// Filtre sur un user spécifique
+// Filtre sur un user spï¿½cifique
 if(!isset($_SESSION['filtreUser'])) {
 	if (isset($_COOKIE['filtreUser'])) {
 		$_SESSION['filtreUser'] = validerTabUsers(explode(",", $_COOKIE['filtreUser']));
@@ -189,6 +189,19 @@ if(!isset($_SESSION['filtreUser'])) {
 	}
 }
 $smarty->assign('filtreUser', $_SESSION['filtreUser']);
+
+// Filtre cohorte : init depuis le cookie + liste des cohortes pour le menu
+if(!isset($_SESSION['filtreCohort'])) {
+	if (isset($_COOKIE['filtreCohort']) && $_COOKIE['filtreCohort'] !== '') {
+		$_SESSION['filtreCohort'] = array_values(array_filter(array_map('intval', explode(",", $_COOKIE['filtreCohort'])), function($v) { return $v > 0; }));
+	} else {
+		$_SESSION['filtreCohort'] = array();
+	}
+}
+$smarty->assign('filtreCohort', $_SESSION['filtreCohort']);
+$cohortsFiltre = new GCollection('Cohort');
+$cohortsFiltre->db_loadSQL("SELECT * FROM planning_cohort ORDER BY population, annee, libelle");
+$smarty->assign('cohortsFiltre', $cohortsFiltre->getSmartyData(TRUE));
 
 // Filtre par texte
 if(!isset($_SESSION['filtreTexte'])) {
@@ -268,7 +281,7 @@ if(isset($_COOKIE['triPlanningAgenda']) && (in_array($_COOKIE['triPlanningAgenda
 $smarty->assign('triPlanningAgenda', $_SESSION['triPlanningAgenda']);
 $smarty->assign('triPlanningPossibleAutre', $triPlanningPossibleAutre);
 
-// Tri planning par défaut
+// Tri planning par dï¿½faut
 if($_SESSION['baseLigne'] == "projets") {
 	$_SESSION['triPlanning'] = $_SESSION['triPlanningProjet'];
 }elseif($_SESSION['baseLigne'] == "users"){
@@ -283,7 +296,7 @@ if($_SESSION['baseLigne'] == "projets") {
 $smarty->assign('triPlanning', $_SESSION['triPlanning']);
 
 
-// Nombre de lignes affichées
+// Nombre de lignes affichï¿½es
 if(isset($_COOKIE['nb_lignes']) && is_numeric($_COOKIE['nb_lignes'])) {
 	$_SESSION['nb_lignes'] = $_COOKIE['nb_lignes'];
 }
@@ -373,14 +386,14 @@ if(isset($_SESSION['direct_periode_id'])) {
 	unset($_SESSION['direct_periode_id']);
 }
 
-// Liste des projets couvrant la période, pour le filtre de projets
+// Liste des projets couvrant la pï¿½riode, pour le filtre de projets
 $projetsFiltre = new GCollection('Projet');
 $sql = "SELECT distinct pp.*, pg.nom AS groupe_nom, pp.nom as projet_nom, pp.couleur as projet_couleur, pp.createur_id as projet_createur_id
 		FROM planning_projet pp
 		LEFT JOIN planning_periode pd ON pp.projet_id = pd.projet_id
 		LEFT JOIN planning_groupe AS pg ON pp.groupe_id = pg.groupe_id ";
 if ($user->checkDroit('tasks_view_team_projects') && !is_null($user->user_groupe_id)) {
-	// on filtre sur les projets de l'équipe de ce user
+	// on filtre sur les projets de l'ï¿½quipe de ce user
 	$sql .= " LEFT JOIN planning_user AS pu ON pd.user_id = pu.user_id ";
 }
 if($user->checkDroit('tasks_view_specific_projects')) {
@@ -388,11 +401,11 @@ if($user->checkDroit('tasks_view_specific_projects')) {
 }
 $sql .= "WHERE ((0 = 0";
 if($user->checkDroit('tasks_view_own_projects')) {
-	// on filtre sur les projets dont le user courant est propriétaire ou assigné
+	// on filtre sur les projets dont le user courant est propriï¿½taire ou assignï¿½
 	$sql .= " AND (pp.createur_id = " . val2sql($user->user_id) . " OR pd.user_id = " . val2sql($user->user_id) . ")";
 }
 if ($user->checkDroit('tasks_view_team_projects') && !is_null($user->user_groupe_id)) {
-	// on filtre sur les projets de l'équipe de ce user
+	// on filtre sur les projets de l'ï¿½quipe de ce user
 	$sql .= " AND pu.user_groupe_id = " . val2sql($user->user_groupe_id);
 }
 if ($user->checkDroit('tasks_view_only_own')) {
@@ -421,7 +434,7 @@ if($user->checkDroit('tasks_view_specific_projects')){
 	$listeProjetsPossibles = $projetsFiltre->get('projet_id');
 }
 
-// calcul des heures de début et de fin en fonction des heures cochées dans les params
+// calcul des heures de dï¿½but et de fin en fonction des heures cochï¿½es dans les params
 $tabTranchesHoraires = explode(',', CONFIG_HOURS_DISPLAYED);
 $heureDebutMatin = $tabTranchesHoraires[0] . ':00';
 $heureDebutAprem = '13:00';
@@ -449,7 +462,7 @@ if ($user->checkDroit('tasks_view_team_projects') && !is_null($user->user_groupe
 if ($user->checkDroit('tasks_view_only_own')) {
 	$sql .= " AND pu.user_id = " . val2sql($user->user_id);
 }
-// Si filtre sur son équipe
+// Si filtre sur son ï¿½quipe
 if($user->checkDroit('tasks_view_team_users')) {
 	$sql.= " AND pu.user_groupe_id = '".$_SESSION['user_groupe_id']."'";
 }
@@ -479,7 +492,7 @@ if (CONFIG_SOPLANNING_OPTION_RESSOURCES == 1)
 	$smarty->assign('listeRessources', $listeRessources->getSmartyData());
 }
 
-// liste des status pour tâches
+// liste des status pour tï¿½ches
 $status = new GCollection('Status');
 $status->db_load(array('affichage', 'IN', array('t', 'tp')), array('priorite' => 'ASC', 'nom' => 'ASC'));
 $smarty->assign('listeStatusTaches', $status->getSmartyData());

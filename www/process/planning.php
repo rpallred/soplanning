@@ -17,7 +17,7 @@ if(isset($_GET['date_fin_affiche'])){
 	if($_GET['date_debut_custom'] == 'aujourdhui') {
 		$dateDebut = new Datetime();
 
-		// si date de fin inférieure é nouvelle date de début, on recupere l'interval de jour initial
+		// si date de fin infï¿½rieure ï¿½ nouvelle date de dï¿½but, on recupere l'interval de jour initial
 		if($dateFin < $dateDebut) {
 			$dateFin = new DateTime();
 			$dateFin->modify('+ ' . $interval . ' days');
@@ -27,7 +27,7 @@ if(isset($_GET['date_fin_affiche'])){
 		$dateDebut = new Datetime();
 		$dateDebut->modify('- 7 days');
 
-		// si date de fin inférieure é nouvelle date de début, on recupere l'interval de jour initial
+		// si date de fin infï¿½rieure ï¿½ nouvelle date de dï¿½but, on recupere l'interval de jour initial
 		if($dateFin < $dateDebut) {
 			$dateFin = new DateTime();
 			$dateFin->modify('+ ' . $interval . ' days');
@@ -37,7 +37,7 @@ if(isset($_GET['date_fin_affiche'])){
 		$dateDebut = new Datetime();
 		$dateDebut->modify('- 1 month');
 
-		// si date de fin inférieure é nouvelle date de début, on recupere l'interval de jour initial
+		// si date de fin infï¿½rieure ï¿½ nouvelle date de dï¿½but, on recupere l'interval de jour initial
 		if($dateFin < $dateDebut) {
 			$dateFin = new DateTime();
 			$dateFin->modify('+ ' . $interval . ' days');
@@ -47,7 +47,7 @@ if(isset($_GET['date_fin_affiche'])){
 		$dateDebut = new Datetime();
 		$dateDebut->modify('-' . ($dateDebut->format('N')-1) . ' days');
 
-		// si date de fin inférieure é nouvelle date de début, on recupere l'interval de jour initial
+		// si date de fin infï¿½rieure ï¿½ nouvelle date de dï¿½but, on recupere l'interval de jour initial
 		if($dateFin < $dateDebut) {
 			$dateFin = new DateTime();
 			$dateFin->modify('+ ' . $interval . ' days');
@@ -56,7 +56,7 @@ if(isset($_GET['date_fin_affiche'])){
 	} elseif($_GET['date_debut_custom'] == 'debut_mois') {
 		$dateDebut = new Datetime();
 		$dateDebut->modify('-' . ($dateDebut->format('d')-1) . ' days');
-		// si date de fin inférieure é nouvelle date de début, on recupere l'interval de jour initial
+		// si date de fin infï¿½rieure ï¿½ nouvelle date de dï¿½but, on recupere l'interval de jour initial
 		if($dateFin < $dateDebut) {
 			$dateFin = new DateTime();
 			$dateFin->modify('+ ' . $interval . ' days');
@@ -116,7 +116,7 @@ if(isset($_GET['raccourci_date'])) {
 	if($_GET['raccourci_date'] == 'aujourdhui') {
 		$dateDebut = new Datetime();
 		$dateFin = clone $dateDebut;
-		// si vue par heures, on ne saisit que la date de début
+		// si vue par heures, on ne saisit que la date de dï¿½but
 		if($_SESSION['baseColonne'] == 'heures'){
 			$dateFin->modify('+ '.CONFIG_DEFAULT_NB_DAYS_DISPLAYED.' days');
 		}else $dateFin->modify('+ '.CONFIG_DEFAULT_NB_MONTHS_DISPLAYED.' month');
@@ -153,12 +153,12 @@ if(isset($_GET['raccourci_date'])) {
 	}
 }
 
-// si vue par heures, on ne saisit que la date de début
+// si vue par heures, on ne saisit que la date de dï¿½but
 if($_SESSION['baseLigne'] == 'heures'){
 	$_GET['date_fin_affiche'] = $_GET['date_debut_affiche'];
 }
 
-// changement date de début et fin
+// changement date de dï¿½but et fin
 if(isset($_GET['date_debut_affiche']) && isset($_GET['date_fin_affiche'])) {
 	$dateDebut = initDateTime($_GET['date_debut_affiche']);
 	$dateFin = initDateTime($_GET['date_fin_affiche']);
@@ -179,7 +179,7 @@ if(isset($_GET['date_debut_affiche']) && isset($_GET['date_fin_affiche'])) {
 	}
 }
 
-// changement nb mois affichés
+// changement nb mois affichï¿½s
 if (isset($_GET['nb_mois']) && is_numeric($_GET['nb_mois']) && round($_GET['nb_mois']) > 0) {
 	$nbMois = $_GET['nb_mois'];
 	$_SESSION['nb_mois'] = $_GET['nb_mois'];
@@ -189,7 +189,7 @@ if (isset($_GET['nb_mois']) && is_numeric($_GET['nb_mois']) && round($_GET['nb_m
 	setcookie('nb_mois', $_SESSION['nb_mois'], time()+60*60*24*500, '/');
 }
 
-// changement nb jours affichés
+// changement nb jours affichï¿½s
 if (isset($_GET['nb_jours']) && is_numeric($_GET['nb_jours']) && round($_GET['nb_jours']) > 0) {
 	$nbMois = $_GET['nb_jours'];
 	$_SESSION['nb_jours'] = $_GET['nb_jours'];
@@ -352,6 +352,18 @@ if(isset($_GET['desactiverFiltreUser'])) {
 	setcookie('filtreUser', '', time() - 3600, '/');
 }
 
+// Filtre par cohorte (entiers ; valeur vide = toutes les cohortes)
+if(isset($_POST['filtreCohort'])) {
+	$tab = array_values(array_filter(array_map('intval', (array) $_POST['filtreCohort']), function($v) { return $v > 0; }));
+	setcookie('filtreCohort', implode(",", $tab), time() + 60*60*24*365, '/');
+	$_SESSION['filtreCohort'] = $tab;
+}
+if(isset($_GET['desactiverFiltreCohort'])) {
+	$_SESSION['filtreCohort'] = array();
+	unset($_COOKIE["filtreCohort"]);
+	setcookie('filtreCohort', '', time() - 3600, '/');
+}
+
 if(isset($_GET['masquerLigneVide'])) {
 	$_SESSION['masquerLigneVide'] = $_GET['masquerLigneVide'];
 	setcookie('masquerLigneVide', $_SESSION['masquerLigneVide'], time()+60*60*24*500, '/');
@@ -377,7 +389,7 @@ if(isset($_GET['afficherTableauRecap'])) {
 if(isset($_POST['filtreStatutTache'])) {
 	// si filtre sur les statuts de tache, on boucle pour recuperer l'ensemble des projets choisis
 	$filtre = $_POST['statutsTache'];
-	// si tous les status sont cochés, revient à desactiver le filtre
+	// si tous les status sont cochï¿½s, revient ï¿½ desactiver le filtre
 	$statuts = new GCollection('Status');
 	$statuts->db_load(array('affichage', 'IN', array('t', 'tp')));
 	if(count($filtre) >= $statuts->getCount() || !isset($_POST['statutsTache'])) {
@@ -398,7 +410,7 @@ if(isset($_POST['filtreStatutTache'])) {
 if(isset($_POST['filtreStatutProjet'])) {
 	// si filtre sur les statuts de projet, on boucle pour recuperer l'ensemble des projets choisis
 	$filtre = $_POST['statutsProjet'];
-	// si tous les status sont cochés, revient à desactiver le filtre
+	// si tous les status sont cochï¿½s, revient ï¿½ desactiver le filtre
 	$statuts = new GCollection('Status');
 	$statuts->db_load(array('affichage', 'IN', array('p', 'tp')));
 	if(count($filtre) >= $statuts->getCount() || !isset($_POST['statutsProjet'])) {
