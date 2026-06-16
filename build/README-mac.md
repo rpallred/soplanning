@@ -26,7 +26,11 @@ stick.
    ```sh
    bash build/build-mac-app.sh
    ```
-   Produces `build/dist/SOPlanning.app`.
+   Produces `build/dist/SOPlanning.app`. This compiles the native window
+   launcher (`build/mac-launcher/SOPlanning.swift`) with `swiftc`, which ships
+   with the Xcode Command Line Tools (`xcode-select --install`). If `swiftc`
+   is unavailable, the build falls back to a launcher that opens the system
+   browser instead of a native window.
 
 ## First run
 
@@ -52,8 +56,8 @@ stick.
 
 ## Notes / future polish
 
-- The current launcher opens the system browser. A native app window
-  (WKWebView) is a possible upgrade for a more "app-like" feel.
+- The app runs in a native window (WKWebView). Quit it from the Dock or with
+  Cmd-Q; that stops the bundled server and releases the lock.
 - For distribution beyond your own machines, the app would need Apple code
   signing + notarization to avoid the Gatekeeper prompt.
 - To migrate your existing data instead of starting fresh, run
