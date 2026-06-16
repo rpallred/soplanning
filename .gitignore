@@ -8,3 +8,5 @@ www/upload/files/*
 !www/upload/files/.htaccess
 build/mac/
 build/dist/
+.DS_Store
+build/mac-launcher/SOPlanning
