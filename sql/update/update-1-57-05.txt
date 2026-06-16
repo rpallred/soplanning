@@ -1,0 +1,22 @@
+-- LibreBooking-style features, part 1: per-resource availability
+-- New in 1.57.00-hardened.1
+--
+-- A resource with one or more 'window' rows is bookable ONLY within those
+-- recurring weekly windows; a resource with no 'window' rows is bookable any
+-- time (current behaviour). 'blackout' rows mark date ranges when the resource
+-- is unavailable (vacation/PTO/maintenance), overriding windows.
+
+CREATE TABLE `planning_availability` (
+  `avail_id` INT NOT NULL AUTO_INCREMENT,
+  `resource_id` VARCHAR(20) COLLATE latin1_general_ci NOT NULL,
+  `type` ENUM('window','blackout') COLLATE latin1_general_ci NOT NULL DEFAULT 'window',
+  `jour_semaine` TINYINT NULL DEFAULT NULL,
+  `heure_debut` TIME NULL DEFAULT NULL,
+  `heure_fin` TIME NULL DEFAULT NULL,
+  `date_debut` DATE NULL DEFAULT NULL,
+  `date_fin` DATE NULL DEFAULT NULL,
+  `note` VARCHAR(255) COLLATE latin1_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`avail_id`),
+  KEY `idx_avail_resource` (`resource_id`),
+  CONSTRAINT `fk_avail_resource` FOREIGN KEY (`resource_id`) REFERENCES `planning_ressource` (`ressource_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
