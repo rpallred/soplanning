@@ -273,6 +273,37 @@ function val2sql($val)
 	}
 }
 
+/**
+ * SQL fragment for the active cohort filter (session filtreCohort), or '' if none.
+ * Constrains the given user_id column to members of the selected cohort(s).
+ * Cohort ids are cast to int, so the result is injection-safe.
+ *
+ * @param string $userIdColumn  e.g. 'user_id' or 'planning_periode.user_id'
+ */
+function cohortFilterSql($userIdColumn)
+{
+	if (isset($_SESSION['filtreCohort']) && is_array($_SESSION['filtreCohort']) && count($_SESSION['filtreCohort']) > 0) {
+		$ids = implode(",", array_map('intval', $_SESSION['filtreCohort']));
+		return " AND $userIdColumn IN (SELECT user_id FROM planning_user WHERE cohort_id IN ($ids))";
+	}
+	return '';
+}
+
+/**
+ * Ensure the planning filter session arrays exist. Exports read these with
+ * count(); on PHP 8 count(null) is fatal, which happens when an export is
+ * reached before the planning page initialised the filters. Defaulting them
+ * to empty arrays is also the correct "no filter" behaviour.
+ */
+function ensurePlanningFilterDefaults()
+{
+	foreach (array('filtreUser', 'filtreGroupeProjet', 'filtreStatutTache', 'filtreStatutProjet', 'filtreGroupeLieu', 'filtreGroupeRessource', 'filtreCohort') as $k) {
+		if (!isset($_SESSION[$k]) || !is_array($_SESSION[$k])) {
+			$_SESSION[$k] = array();
+		}
+	}
+}
+
 
 // calcule la couleur (noir ou blanc) qui tranche le mieux avec celle pass�e en parametre
 function buttonFontColor($bgcolor) {

@@ -7,6 +7,8 @@ require('./base.inc');
 require(BASE .'/../config.inc');
 require(BASE .'/../includes/header.inc');
 
+ensurePlanningFilterDefaults();
+
 $html = '';
 $js = '';
 
@@ -191,7 +193,7 @@ if($_SESSION['baseLigne'] == 'projets') {
 		// on filtre sur les projets de l'équipe de ce user
 		$sql .= " AND planning_projet.projet_id IN ('" . implode("','", $listeProjetsPossibles) . "')";
 	}
-	$sql .= " ORDER BY " . $_SESSION['triPlanning'];
+	if (!empty($_SESSION['triPlanning'])) { $sql .= " ORDER BY " . $_SESSION['triPlanning']; }
 } else {
 	$lines = new GCollection('User');
 	$sql = "SELECT planning_user.*, planning_user_groupe.nom AS team_nom
@@ -201,19 +203,20 @@ if($_SESSION['baseLigne'] == 'projets') {
 	if(count($_SESSION['filtreUser']) > 0) {
 		$sql.= " AND user_id IN ('" . implode("','", $_SESSION['filtreUser']) . "')";
 	}
+	$sql .= cohortFilterSql('user_id');
 	if ($user->checkDroit('tasks_view_team_projects') && !is_null($user->user_groupe_id)) {
 		$sql .= " AND planning_user.user_groupe_id = " . val2sql($user->user_groupe_id);
 	}
 	if ($user->checkDroit('tasks_view_only_own')) {
 		$sql .= " AND planning_user.user_id = " . val2sql($user->user_id);
 	}
-	$sql .= " ORDER BY " . $_SESSION['triPlanning'];
+	if (!empty($_SESSION['triPlanning'])) { $sql .= " ORDER BY " . $_SESSION['triPlanning']; }
 }
 $lines->db_loadSQL($sql);
 $nbLignesTotal = $lines->getCount();
 
 // on recupere le nombre de pages pour afficher le pager
-$smarty->assign('nbPagesLignes', ceil($nbLignesTotal/$nbLignes));
+$smarty->assign('nbPagesLignes', $nbLignes > 0 ? ceil($nbLignesTotal/$nbLignes) : 1);
 
 // FIN CHARGEMENT DES LIGNES (USERS SI NORMAL, PROJET SI INVERS�)
 
@@ -326,6 +329,7 @@ while($ligneTmp = $lines->fetch()) {
 	if(count($_SESSION['filtreUser']) > 0) {
 		$sql.= " AND planning_periode.user_id IN ('" . implode("','", $_SESSION['filtreUser']) . "')";
 	}
+	$sql .= cohortFilterSql('planning_periode.user_id');
 	if($_SESSION['filtreTexte'] != "") {
 		$sql.= " AND (convert(planning_periode.notes using utf8) collate utf8_general_ci LIKE " . val2sql('%' . $_SESSION['filtreTexte'] . '%') . " OR convert(planning_periode.lien using utf8) collate utf8_general_ci LIKE " . val2sql('%' . $_SESSION['filtreTexte'] . '%') ." OR convert(planning_periode.titre using utf8) collate utf8_general_ci LIKE " . val2sql('%' . $_SESSION['filtreTexte'] . '%') . " )";
 	}

@@ -4,6 +4,8 @@ require('./base.inc');
 require(BASE .'/../config.inc');
 require(BASE .'/../includes/header.inc');
 
+ensurePlanningFilterDefaults();
+
 $html = '';
 $js = '';
 
@@ -12,7 +14,7 @@ $DAYS_INCLUDED = getDaysIncluded();
 $DAYS_DISPLAYED = getDaysDisplayed();
 $DAYS_GREYEDOUT = getDaysGrayedOut();
 
-// PARAMÈTRES ////////////////////////////////
+// PARAMï¿½TRES ////////////////////////////////
 $dateDebut = initDateTime($_SESSION['date_debut_affiche']);
 $dateFin = initDateTime($_SESSION['date_fin_affiche']);
 
@@ -23,7 +25,7 @@ $masquerLigneVide = $_SESSION['masquerLigneVide'];
 
 $DAYS_INCLUDED = getDaysIncluded();
 
-// FIN PARAMÈTRES ////////////////////////////////
+// FIN PARAMï¿½TRES ////////////////////////////////
 
 $now = new DateTime();
 
@@ -55,7 +57,7 @@ $html .= $headerNomJours . CRLF;
 // FIN GESTION DES ENTETES DU TABLEAU (MOIS, SEMAINE ET JOUR)
 
 
-// recuperation des projets couvrant la période, pour le filtre de projets
+// recuperation des projets couvrant la pï¿½riode, pour le filtre de projets
 $projetsFiltre = new GCollection('Projet');
 $sql = "SELECT distinct pp.*, pg.nom AS groupe_nom
 		FROM planning_projet pp
@@ -65,7 +67,7 @@ if($user->checkDroit('tasks_view_specific_projects')) {
 	$sql .= " INNER JOIN planning_right_on_projet AS rop ON rop.allowed_id = pp.projet_id AND rop.owner_id = " . val2sql($user->user_id);
 }
 if ($user->checkDroit('tasks_view_team_projects') && !is_null($user->user_groupe_id)) {
-	// on filtre sur les projets de l'équipe de ce user
+	// on filtre sur les projets de l'ï¿½quipe de ce user
 	$sql .= " INNER JOIN planning_user AS pu ON pd.user_id = pu.user_id ";
 }
 $sql .= "WHERE (
@@ -76,11 +78,11 @@ $sql .= "WHERE (
 			AND pd.date_debut >= '" . $dateDebut->format('Y-m-d') . "')
 	)";
 if($user->checkDroit('tasks_view_own_projects')) {
-	// on filtre sur les projets dont le user courant est propriétaire ou assigné
+	// on filtre sur les projets dont le user courant est propriï¿½taire ou assignï¿½
 	$sql .= " AND (pp.createur_id = " . val2sql($user->user_id) . " OR pd.user_id = " . val2sql($user->user_id) . ")";
 }
 if ($user->checkDroit('tasks_view_team_projects') && !is_null($user->user_groupe_id)) {
-	// on filtre sur les projets de l'équipe de ce user
+	// on filtre sur les projets de l'ï¿½quipe de ce user
 	$sql .= " AND pu.user_groupe_id = " . val2sql($user->user_groupe_id);
 }
 if ($user->checkDroit('tasks_view_only_own')) {
@@ -107,7 +109,7 @@ $usersFiltre->db_loadSQL($sql);
 $smarty->assign('listeUsers', $usersFiltre->getSmartyData());
 
 
-// CHARGEMENT DES LIGNES (USERS SI NORMAL, PROJET SI INVERSÉ)
+// CHARGEMENT DES LIGNES (USERS SI NORMAL, PROJET SI INVERSï¿½)
 if($_SESSION['baseLigne'] == 'projets') {
 	$lines = $projetsFiltre;
 } else {
@@ -117,6 +119,7 @@ if($_SESSION['baseLigne'] == 'projets') {
 	if(count($_SESSION['filtreUser']) > 0) {
 		$sql.= " AND user_id IN ('" . implode("','", $_SESSION['filtreUser']) . "')";
 	}
+	$sql .= cohortFilterSql('user_id');
 	if ($user->checkDroit('tasks_view_only_own')) {
 		$sql .= " AND planning_user.user_id = " . val2sql($user->user_id);
 	}
@@ -125,7 +128,7 @@ if($_SESSION['baseLigne'] == 'projets') {
 $lines->db_loadSQL($sql);
 $nbLignesTotal = $lines->getCount();
 
-// FIN CHARGEMENT DES LIGNES (USERS SI NORMAL, PROJET SI INVERSÉ)
+// FIN CHARGEMENT DES LIGNES (USERS SI NORMAL, PROJET SI INVERSï¿½)
 
 
 $nbLine = 1;
@@ -138,7 +141,7 @@ while($lineTmp = $lines->fetch()) {
 
 	$nbLine++;
 
-	// on charge les jours occupés pour cette ligne
+	// on charge les jours occupï¿½s pour cette ligne
 	$periodes = new GCollection('Periode');
 	if($_SESSION['baseLigne'] == 'projets') {
 		$sql = "SELECT planning_periode.*, planning_user.*, planning_user.nom as user_nom, planning_status.nom as status_nom, planning_projet.nom as projet_nom,pl.nom as lieu_nom, pr.nom as ressource_nom
@@ -161,15 +164,15 @@ while($lineTmp = $lines->fetch()) {
 			$sql .= " INNER JOIN planning_right_on_projet AS rop ON rop.allowed_id = planning_periode.projet_id AND rop.owner_id = " . val2sql($user->user_id);
 		}
 		if ($user->checkDroit('tasks_view_team_projects') && !is_null($user->user_groupe_id)) {
-			// on filtre sur les projets de l'équipe de ce user
+			// on filtre sur les projets de l'ï¿½quipe de ce user
 			$sql .= " INNER JOIN planning_user AS pu ON planning_periode.user_id = pu.user_id ";
 		}
 		if($user->checkDroit('tasks_view_own_projects')) {
-			// on filtre sur les projets dont le user courant est propriétaire ou assigné
+			// on filtre sur les projets dont le user courant est propriï¿½taire ou assignï¿½
 			$sql .= " AND (planning_projet.createur_id = " . val2sql($user->user_id) . " OR planning_periode.user_id = " . val2sql($user->user_id) . ")";
 		}
 		if ($user->checkDroit('tasks_view_team_projects') && !is_null($user->user_groupe_id)) {
-			// on filtre sur les projets de l'équipe de ce user
+			// on filtre sur les projets de l'ï¿½quipe de ce user
 			$sql .= " AND planning_periode.user_groupe_id = " . val2sql($user->user_groupe_id);
 		}
 		if ($user->checkDroit('tasks_view_only_own')) {
@@ -188,11 +191,12 @@ while($lineTmp = $lines->fetch()) {
 	if(count($_SESSION['filtreUser']) > 0) {
 		$sql.= " AND planning_periode.user_id IN ('" . implode("','", $_SESSION['filtreUser']) . "')";
 	}
+	$sql .= cohortFilterSql('planning_periode.user_id');
 	if($user->checkDroit('tasks_view_own_projects')) {
 		$sql .= " AND planning_periode.projet_id IN ('" . implode("','", $listeProjetsPossibles) . "')";
 	}
 	if ($user->checkDroit('tasks_view_team_projects') && !is_null($user->user_groupe_id)) {
-		// on filtre sur les projets de l'équipe de ce user
+		// on filtre sur les projets de l'ï¿½quipe de ce user
 		$sql .= " AND pu.user_groupe_id = " . val2sql($user->user_groupe_id);
 	}
 	if ($user->checkDroit('tasks_view_only_own')) {
@@ -202,7 +206,7 @@ while($lineTmp = $lines->fetch()) {
 
 	$periodes->db_loadSQL($sql);
 	$joursOccupes = array();
-	// pour chaque période de cette ligne, on remplie le tableau des jours occupés
+	// pour chaque pï¿½riode de cette ligne, on remplie le tableau des jours occupï¿½s
 	while ($periode = $periodes->fetch()) {
 		$infosJour = $periode->getData();
 		if($_SESSION['baseLigne'] == 'projets') {
@@ -241,14 +245,14 @@ while($lineTmp = $lines->fetch()) {
 		}
 	}
 
-	// si option activée, on masque la ligne si elle est vide
+	// si option activï¿½e, on masque la ligne si elle est vide
 	if($masquerLigneVide == 1 && count($joursOccupes) == 0) {
 		continue;
 	}
 
 	$html .= $lineTmp->nom . ';';
 	$tmpDate = clone $dateDebut;
-	// on boucle sur la durée de l'affichage
+	// on boucle sur la durï¿½e de l'affichage
 	while ($tmpDate <= $dateFin) {
 		if (in_array($tmpDate->format('N'), $DAYS_DISPLAYED)) {
 		} else {
