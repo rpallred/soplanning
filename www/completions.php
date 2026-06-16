@@ -85,9 +85,22 @@ foreach ($members as $m) {
 	);
 }
 
+// For trainee cohorts, offer people who can be added/moved into this cohort
+// (anyone not already in it; choosing someone from another cohort moves them —
+// e.g. promoting an intern into a fellow cohort).
+$assignable = array();
+if ($subjectType === 'user') {
+	$res = db_query("SELECT user_id, nom FROM planning_user
+		WHERE user_id NOT IN ('publicspl','ADM')
+		  AND (cohort_id IS NULL OR cohort_id <> " . val2sql($selected) . ")
+		ORDER BY nom");
+	while ($u = db_fetch_array($res)) { $assignable[] = $u; }
+}
+
 $smarty->assign('cohorts', $cohortData);
 $smarty->assign('selectedCohort', $selected);
 $smarty->assign('subjectType', $subjectType);
+$smarty->assign('assignable', $assignable);
 $smarty->assign('reqRows', $reqRows);
 $smarty->assign('matrix', $matrix);
 $smarty->assign('xajax', $xajax->getJavascript("", "assets/js/xajax.js"));

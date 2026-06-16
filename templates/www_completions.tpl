@@ -17,6 +17,21 @@
 					&nbsp;<a href="{$BASE}/requirements?cohort_id={$selectedCohort}" class="btn btn-outline-secondary btn-sm">Manage items</a>
 				</form>
 
+				{if $subjectType == 'user'}
+					<form method="POST" action="{$BASE}/process/cohort_save" class="form-inline" style="margin-bottom:15px;">
+						<input type="hidden" name="crsf" value="{$smarty.session.CRSF}">
+						<input type="hidden" name="action" value="add_member">
+						<input type="hidden" name="cohort_id" value="{$selectedCohort}">
+						<label>Add person to this cohort:&nbsp;</label>
+						<select name="user_id" class="form-control" required>
+							<option value="">-- person --</option>
+							{foreach item=p from=$assignable}<option value="{$p.user_id|escape}">{$p.nom|xss_protect}</option>{/foreach}
+						</select>
+						&nbsp;<button type="submit" class="btn btn-outline-primary btn-sm">Add</button>
+						<span class="text-muted">&nbsp;(moves them here if they're in another cohort)</span>
+					</form>
+				{/if}
+
 				<div style="overflow-x:auto;">
 				<table class="table table-bordered table-sm" style="white-space:nowrap;">
 					<thead class="thead-light">
@@ -31,8 +46,11 @@
 					<tbody>
 						{foreach item=row from=$matrix}
 							<tr>
-								<td style="position:sticky;left:0;background:#fff;">
+								<td style="position:sticky;left:0;background:#fff;white-space:nowrap;">
 									<a href="{$BASE}/completion_form?subject_type={$subjectType}&subject_id={$row.id|escape:'url'}&cohort_id={$selectedCohort}">{$row.nom|xss_protect}</a>
+									{if $subjectType == 'user'}
+										<a href="{$BASE}/process/cohort_save?action=remove_member&user_id={$row.id|escape:'url'}&cohort_id={$selectedCohort}&crsf={$smarty.session.CRSF}" onClick="return confirm('Remove this person from the cohort? Their recorded completions are kept.');" title="Remove from cohort" class="text-muted">&nbsp;<i class="fa fa-times-circle"></i></a>
+									{/if}
 								</td>
 								{foreach item=cell from=$row.cells}
 									<td class="text-center">
