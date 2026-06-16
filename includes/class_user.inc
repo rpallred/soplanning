@@ -99,7 +99,7 @@ class User extends GObject
 	}
 
 	public function decoderDroits() {
-		$this->tabDroits = json_decode(html_entity_decode($this->droits), true);
+		$this->tabDroits = json_decode(html_entity_decode((string) $this->droits), true);
 		if(!is_array($this->tabDroits)) {
 			$this->tabDroits = array();
 		}
