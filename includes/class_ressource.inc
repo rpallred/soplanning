@@ -14,6 +14,8 @@ class Ressource extends GObject
 		$this->fields['exclusif'] = new GFloat('planning_ressource', 'exclusif', 4, TRUE, 0);
 		$this->fields['couleur'] = new GString('planning_ressource', 'couleur', 6, TRUE, NULL);
 		$this->fields['quota_max_jours'] = new GInteger('planning_ressource', 'quota_max_jours', 11, TRUE, NULL);
+		// Optional link to a login account (e.g. a supervisor who can self-serve).
+		$this->fields['user_id'] = new GString('planning_ressource', 'user_id', 20, TRUE, NULL);
 		$this->primaryKeys = array('ressource_id');
 
 		parent::__construct();

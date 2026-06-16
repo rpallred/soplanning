@@ -72,6 +72,15 @@ switch ($action) {
 		}
 		break;
 
+	case 'set_user_link':
+		if ($resourceId !== '') {
+			$uid = trim($_POST['user_id'] ?? '');
+			$val = ($uid !== '') ? val2sql($uid) : 'NULL';
+			db_query("UPDATE planning_ressource SET user_id = $val WHERE ressource_id = " . val2sql($resourceId));
+			$_SESSION['message'] = 'traitementOK';
+		}
+		break;
+
 	case 'delete':
 		$a = new Availability();
 		if ($a->db_load(array('avail_id', '=', (int) ($_GET['avail_id'] ?? 0)))) {

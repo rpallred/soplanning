@@ -44,12 +44,21 @@ if ($selected !== '') {
 	}
 }
 
-// Limits: this resource's max loan duration + the global max active loans per borrower
+// Limits + linked user account for this resource
 $quotaMaxJours = '';
+$linkedUser = '';
 if ($selected !== '') {
 	$r = new Ressource();
-	if ($r->db_load(array('ressource_id', '=', $selected))) { $quotaMaxJours = $r->quota_max_jours; }
+	if ($r->db_load(array('ressource_id', '=', $selected))) {
+		$quotaMaxJours = $r->quota_max_jours;
+		$linkedUser = $r->user_id;
+	}
 }
+$people = array();
+$res = db_query("SELECT user_id, nom FROM planning_user WHERE user_id NOT IN ('publicspl') ORDER BY nom");
+while ($p = db_fetch_array($res)) { $people[] = $p; }
+$smarty->assign('people', $people);
+$smarty->assign('linkedUser', $linkedUser);
 $smarty->assign('quotaMaxJours', $quotaMaxJours);
 $smarty->assign('loanMaxPerUser', defined('CONFIG_LOAN_MAX_ACTIVE_PER_USER') ? CONFIG_LOAN_MAX_ACTIVE_PER_USER : 0);
 

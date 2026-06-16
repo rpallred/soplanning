@@ -22,6 +22,20 @@
 					blackout ranges block it entirely.
 				</p>
 
+				<h5>Linked login account</h5>
+				<form method="POST" action="{$BASE}/process/availability_save" class="form-inline" style="margin-bottom:25px;">
+					<input type="hidden" name="crsf" value="{$smarty.session.CRSF}">
+					<input type="hidden" name="action" value="set_user_link">
+					<input type="hidden" name="resource_id" value="{$selected|escape}">
+					<label>This resource logs in as:&nbsp;</label>
+					<select name="user_id" class="form-control">
+						<option value="">-- no account (admin acts for them) --</option>
+						{foreach item=p from=$people}<option value="{$p.user_id|escape}" {if $p.user_id == $linkedUser}selected{/if}>{$p.nom|xss_protect}</option>{/foreach}
+					</select>
+					&nbsp;<button type="submit" class="btn btn-primary">Save link</button>
+					<span class="text-muted">&nbsp;(optional; lets a supervisor self-serve &amp; get notices)</span>
+				</form>
+
 				<h5>Limits</h5>
 				<form method="POST" action="{$BASE}/process/availability_save" class="form-inline" style="margin-bottom:25px;">
 					<input type="hidden" name="crsf" value="{$smarty.session.CRSF}">

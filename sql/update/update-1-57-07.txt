@@ -1,0 +1,6 @@
+-- Self-service foundation: link a resource (e.g. a supervisor) to a user account.
+-- Nullable -> a resource may exist with no login (admin acts for them);
+-- when set, the linked user can log in / be notified / self-serve.
+ALTER TABLE `planning_ressource` ADD COLUMN `user_id` VARCHAR(20) COLLATE latin1_general_ci NULL DEFAULT NULL;
+ALTER TABLE `planning_ressource`
+  ADD CONSTRAINT `fk_ressource_user` FOREIGN KEY (`user_id`) REFERENCES `planning_user` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE;
