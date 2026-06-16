@@ -28,7 +28,12 @@ switch ($action) {
 		$due = trim($_POST['date_due'] ?? '');
 		// Guard: refuse if this book is already out (exclusive resource).
 		$res = db_query("SELECT loan_id FROM planning_loan WHERE resource_id = " . val2sql($resourceId) . " AND statut = 'out'");
-		if ($resourceId !== '' && db_num_rows($res) === 0) {
+		// Guard: refuse if the requested dates clash with the resource's availability rules.
+		$dateOut = date('Y-m-d');
+		$conflict = ($resourceId !== '') ? Availability::bookingConflict($resourceId, $dateOut, ($due !== '' ? $due : $dateOut)) : '';
+		if ($conflict !== '') {
+			$_SESSION['erreur'] = 'Cannot check out: resource ' . $conflict . '.';
+		} elseif ($resourceId !== '' && db_num_rows($res) === 0) {
 			$loan = new Loan();
 			$loan->resource_id = $resourceId;
 			if ($userId !== '') { $loan->user_id = $userId; }

@@ -189,6 +189,9 @@
 						<a href="{$BASE}/checkout" class="dropdown-item">
 							<i class="fa fa-book fa-lg fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;Book Library
 						</a>
+						<a href="{$BASE}/availability" class="dropdown-item">
+							<i class="fa fa-calendar-check-o fa-lg fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;Resource Availability
+						</a>
 					</div>
 				</li>
 			{/if}
