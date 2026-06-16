@@ -58,44 +58,26 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
 </plist>
 PLIST
 
-# 4. Launcher
-cat > "$APP/Contents/MacOS/SOPlanning" <<'LAUNCH'
+# 4. Native launcher (Swift WKWebView window that owns the PHP server lifecycle)
+LAUNCHER_SRC="$REPO/build/mac-launcher/SOPlanning.swift"
+if command -v swiftc >/dev/null 2>&1 && [ -f "$LAUNCHER_SRC" ]; then
+	echo "Compiling native launcher ..."
+	swiftc -O -o "$APP/Contents/MacOS/SOPlanning" "$LAUNCHER_SRC"
+else
+	echo "swiftc not found — falling back to a browser-opening launcher." >&2
+	cat > "$APP/Contents/MacOS/SOPlanning" <<'LAUNCH'
 #!/bin/bash
-# SOPlanning launcher: start the bundled PHP server and open the app.
 RES="$(cd "$(dirname "$0")/../Resources" && pwd)"
-PHP="$RES/php"
-CODE="$RES/app"
-LOG="${TMPDIR:-/tmp}/soplanning-mac.log"
-
-cd "$CODE"
-
-# Pick a free port in a stable range.
-PORT=8765
-for try in $(seq 8765 8799); do
-	if ! nc -z 127.0.0.1 "$try" 2>/dev/null; then PORT="$try"; break; fi
-done
-
-"$PHP" -S "127.0.0.1:$PORT" -t www dev-router.php >"$LOG" 2>&1 &
+cd "$RES/app"
+PORT=8765; for t in $(seq 8765 8799); do nc -z 127.0.0.1 "$t" 2>/dev/null || { PORT="$t"; break; }; done
+"$RES/php" -S "127.0.0.1:$PORT" -t www dev-router.php >"${TMPDIR:-/tmp}/soplanning-mac.log" 2>&1 &
 SERVER=$!
-
-# Wait for it to come up.
-for i in $(seq 1 30); do
-	if curl -s -o /dev/null "http://127.0.0.1:$PORT/"; then break; fi
-	sleep 0.3
-done
-
+for i in $(seq 1 30); do curl -s -o /dev/null "http://127.0.0.1:$PORT/" && break; sleep 0.3; done
 open "http://127.0.0.1:$PORT/"
-
-# Release the single-instance lock on quit (best effort).
-cleanup() {
-	kill "$SERVER" 2>/dev/null
-	DBPATH=$("$PHP" -r '$j=@json_decode(@file_get_contents("data-location.json"),true); echo $j["sqlite_path"]??"";' 2>/dev/null)
-	[ -n "$DBPATH" ] && rm -f "$DBPATH.lock"
-}
-trap cleanup EXIT INT TERM
-
+trap "kill $SERVER 2>/dev/null" EXIT INT TERM
 wait "$SERVER"
 LAUNCH
+fi
 chmod +x "$APP/Contents/MacOS/SOPlanning"
 
 echo "Done: $APP"
