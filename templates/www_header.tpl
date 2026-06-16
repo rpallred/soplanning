@@ -172,6 +172,10 @@
 						<i class="fa fa-graduation-cap fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Program
 					</a>
 					<div class="dropdown-menu mt-0" aria-labelledby="menuProgram">
+						<a href="{$BASE}/dashboard" class="dropdown-item">
+							<i class="fa fa-tachometer fa-lg fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;Dashboard
+						</a>
+						<div class="dropdown-divider"></div>
 						<a href="{$BASE}/completions" class="dropdown-item">
 							<i class="fa fa-check-square-o fa-lg fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;Completion Tracking
 						</a>
