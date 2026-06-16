@@ -50,8 +50,28 @@
 					</tbody>
 				</table>
 
+				<h5>Holds (waitlist)</h5>
+				{if $booksOut|@count > 0}
+					<form method="POST" action="{$BASE}/process/loan_save" class="form-inline" style="margin-bottom:12px;">
+						<input type="hidden" name="crsf" value="{$smarty.session.CRSF}">
+						<input type="hidden" name="action" value="hold">
+						<label>Place a hold on&nbsp;</label>
+						<select name="resource_id" class="form-control" required style="min-width:200px;">
+							<option value="">-- a book that's out --</option>
+							{foreach item=l from=$booksOut}
+								<option value="{$l.resource_id|escape}">{$l.book_nom|xss_protect}</option>
+							{/foreach}
+						</select>
+						&nbsp;for&nbsp;
+						<select name="user_id" class="form-control" style="min-width:160px;">
+							<option value="">-- person --</option>
+							{foreach item=p from=$people}<option value="{$p.user_id|escape}">{$p.nom|xss_protect}</option>{/foreach}
+						</select>
+						&nbsp;<input type="text" name="borrower_name" class="form-control" placeholder="or a name" maxlength="100">
+						&nbsp;<button type="submit" class="btn btn-outline-primary">Place hold</button>
+					</form>
+				{/if}
 				{if $holds|@count > 0}
-				<h5>Holds</h5>
 				<table class="table table-sm">
 					<thead><tr><th>Book</th><th>Requested by</th><th>Since</th><th>Status</th><th></th></tr></thead>
 					<tbody>
@@ -66,6 +86,8 @@
 						{/foreach}
 					</tbody>
 				</table>
+				{else}
+					<p class="text-muted"><small>No active holds.</small></p>
 				{/if}
 
 				<h5>Recent history</h5>
