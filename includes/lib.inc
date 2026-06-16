@@ -370,7 +370,9 @@ function buttonFontColor($bgcolor) {
 // r?cup?re le message ? afficher, en concat�nant un eventuel code d'erreur
 function formatMessage($smartyTexte) {
 	global $lang;
-	$smartyTemp = new MySmarty('fr');
+	// use the current language (the constructor still prefers $_SESSION['language']
+	// when set); the old hard-coded 'fr' default leaked French message banners.
+	$smartyTemp = new MySmarty($lang ?? 'en');
 
 	$temp = explode(';', $smartyTexte);
 	if(count($temp) == 1) {

@@ -54,8 +54,15 @@
 						{foreach item=req from=$requirements}
 							<tr>
 								<td>{$req.libelle|xss_protect}</td>
-								<td>{$req.response_type}{if $req.response_type == 'number' && $req.cible}&nbsp;<span class="text-muted">(target {$req.cible})</span>{/if}</td>
-								<td>{$req.actif}</td>
+								<td>
+									{if $req.response_type == 'bool'}Yes / No
+									{elseif $req.response_type == 'number'}Number{if $req.cible}&nbsp;<span class="text-muted">(target {$req.cible})</span>{/if}
+									{elseif $req.response_type == 'link'}Link
+									{elseif $req.response_type == 'file'}File
+									{elseif $req.response_type == 'date'}Date
+									{else}{$req.response_type}{/if}
+								</td>
+								<td>{if $req.actif == 'oui'}Yes{else}No{/if}</td>
 								<td>
 									<a href="{$BASE}/process/requirement_save?action=delete&requirement_id={$req.requirement_id}&cohort_id={$selectedCohort}&crsf={$smarty.session.CRSF}"
 									   onClick="return confirm('Remove this requirement and all its completion records?');"
