@@ -81,6 +81,40 @@ switch ($action) {
 		}
 		break;
 
+	case 'create_login':
+		// One-click: create a login account for this resource (e.g. a supervisor)
+		// with sensible defaults, then link it. Keeps the manual pathway too.
+		$r = new Ressource();
+		if ($resourceId !== '' && $r->db_load(array('ressource_id', '=', $resourceId)) && trim((string) $r->user_id) === '') {
+			// unique alphanumeric user_id derived from the resource name
+			$base = preg_replace('/[^a-z0-9]/', '', strtolower((string) $r->nom));
+			if ($base === '') { $base = preg_replace('/[^a-z0-9]/', '', strtolower($resourceId)); }
+			$base = substr($base, 0, 16);
+			$uid = $base; $i = 1;
+			$probe = new User();
+			while ($probe->db_load(array('user_id', '=', $uid))) { $uid = $base . $i; $i++; $probe = new User(); }
+
+			$pw = generateRandomString(10);
+			$u = new User();
+			$u->user_id = $uid;
+			$u->nom = $r->nom;
+			$u->login = $uid;
+			$u->password = password_hash($pw, PASSWORD_BCRYPT);
+			$u->cle = MD5(generateRandomString());
+			$u->visible_planning = 'non';        // already shown as a resource; keep the account login-only
+			$u->notifications = 'oui';
+			$u->login_actif = 'oui';
+			$u->date_creation = date('Y-m-d H:i:s');
+			$u->setDroits(array('self_service'));
+			if ($u->db_save()) {
+				db_query("UPDATE planning_ressource SET user_id = " . val2sql($uid) . " WHERE ressource_id = " . val2sql($resourceId));
+				$_SESSION['message'] = 'Login created for ' . $r->nom . ' — login: ' . $uid . '   password: ' . $pw . '   (write this down; shown once)';
+			} else {
+				$_SESSION['erreur'] = 'Could not create the login account.';
+			}
+		}
+		break;
+
 	case 'delete':
 		$a = new Availability();
 		if ($a->db_load(array('avail_id', '=', (int) ($_GET['avail_id'] ?? 0)))) {

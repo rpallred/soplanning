@@ -35,6 +35,17 @@
 					&nbsp;<button type="submit" class="btn btn-primary">Save link</button>
 					<span class="text-muted">&nbsp;(optional; lets a supervisor self-serve &amp; get notices)</span>
 				</form>
+				{if $linkedUser == ''}
+					<form method="POST" action="{$BASE}/process/availability_save" style="margin-bottom:25px;">
+						<input type="hidden" name="crsf" value="{$smarty.session.CRSF}">
+						<input type="hidden" name="action" value="create_login">
+						<input type="hidden" name="resource_id" value="{$selected|escape}">
+						<button type="submit" class="btn btn-outline-success btn-sm" onClick="return confirm('Create a login account for this resource (self-service right, not shown on the planning)? The password is displayed once.');">
+							<i class="fa fa-user-plus"></i>&nbsp;Create a login for this supervisor
+						</button>
+						<span class="text-muted">&nbsp;(or pick an existing account above)</span>
+					</form>
+				{/if}
 
 				<h5>Limits</h5>
 				<form method="POST" action="{$BASE}/process/availability_save" class="form-inline" style="margin-bottom:25px;">
