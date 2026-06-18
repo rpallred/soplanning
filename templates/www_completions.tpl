@@ -38,7 +38,7 @@
 						<tr>
 							<th style="position:sticky;left:0;background:#fff;">Person</th>
 							{foreach item=req from=$reqRows}
-								<th style="font-weight:normal;font-size:12px;">{$req.libelle|xss_protect}<br><small class="text-muted">{$req.response_type}</small></th>
+								<th style="font-weight:normal;font-size:12px;">{$req.libelle|xss_protect}<br><small class="text-muted">{if $req.response_type == 'bool'}Yes / No{elseif $req.response_type == 'number'}Number{elseif $req.response_type == 'link'}Link{elseif $req.response_type == 'file'}File{elseif $req.response_type == 'date'}Date{else}{$req.response_type}{/if}</small></th>
 							{/foreach}
 							<th>Progress</th>
 						</tr>
