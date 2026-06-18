@@ -5,34 +5,71 @@ function date_diff2($date1, $date2) {
 }
 
 /**
- * Capabilities implied by a supervisor's level/status.
- * Levels: leader (Director/Faculty), bhc3 (Principal, 2yr post-license),
- * bhc2 (licensed), bhc1 (unlicensed), fellow / other (ancillary).
+ * Site-configurable supervisor levels, loaded from planning_supervisor_level
+ * (managed in Settings). Returns code => array(label, ordre, lead_group, cover,
+ * assignable) ordered by `ordre`. Cached per request. Falls back to the built-in
+ * HealthPoint BHC defaults if the table is missing or empty, so capability
+ * checks never break on an un-migrated or freshly-installed database.
+ *
  *   - lead_group : may lead a group-supervision session
  *   - cover      : may cover/provide individual supervision
  *   - assignable : may be assigned as a trainee's principal supervisor
- * Unknown/empty level => permissive (don't restrict supervisors with no level set).
+ */
+function getSupervisorLevels() {
+	static $cache = null;
+	if ($cache !== null) { return $cache; }
+	$cache = array();
+	$res = @db_query("SELECT code, label, ordre, lead_group, cover, assignable FROM planning_supervisor_level ORDER BY ordre, label");
+	if ($res) {
+		while ($r = db_fetch_array($res)) {
+			$cache[$r['code']] = array(
+				'label' => $r['label'],
+				'ordre' => (int) $r['ordre'],
+				'lead_group' => ($r['lead_group'] === 'oui'),
+				'cover' => ($r['cover'] === 'oui'),
+				'assignable' => ($r['assignable'] === 'oui'),
+			);
+		}
+	}
+	if (empty($cache)) {
+		// Built-in defaults (used pre-migration / on empty table).
+		$def = array(
+			'bhc1' => array('BHC I', 1, true, false, false),
+			'bhc2' => array('BHC II', 2, true, true, false),
+			'bhc3' => array('BHC III (Principal)', 3, true, true, true),
+			'leader' => array('Leader / Director', 4, true, true, true),
+			'fellow' => array('Fellow', 5, true, true, false),
+			'other' => array('Other clinician', 6, true, true, false),
+		);
+		foreach ($def as $code => $d) {
+			$cache[$code] = array('label' => $d[0], 'ordre' => $d[1], 'lead_group' => $d[2], 'cover' => $d[3], 'assignable' => $d[4]);
+		}
+	}
+	return $cache;
+}
+
+/**
+ * Capabilities implied by a supervisor's level. Unknown/empty level => permissive
+ * (don't restrict supervisors with no level set).
  */
 function supervisorCapabilities($niveau) {
-	switch (strtolower(trim((string) $niveau))) {
-		case 'leader':
-		case 'bhc3':   return array('lead_group' => true,  'cover' => true,  'assignable' => true);
-		case 'bhc2':   return array('lead_group' => true,  'cover' => true,  'assignable' => false);
-		case 'bhc1':   return array('lead_group' => true,  'cover' => false, 'assignable' => false);
-		case 'fellow':
-		case 'other':  return array('lead_group' => true,  'cover' => true,  'assignable' => false);
-		default:       return array('lead_group' => true,  'cover' => true,  'assignable' => true);
+	$code = strtolower(trim((string) $niveau));
+	$levels = getSupervisorLevels();
+	if ($code !== '' && isset($levels[$code])) {
+		return array(
+			'lead_group' => $levels[$code]['lead_group'],
+			'cover' => $levels[$code]['cover'],
+			'assignable' => $levels[$code]['assignable'],
+		);
 	}
+	return array('lead_group' => true, 'cover' => true, 'assignable' => true);
 }
 
 /** Human label for a supervisor level (for dropdowns / display). */
 function supervisorLevelLabel($niveau) {
-	$map = array(
-		'leader' => 'Leader / Director', 'bhc3' => 'BHC III (Principal)',
-		'bhc2' => 'BHC II', 'bhc1' => 'BHC I', 'fellow' => 'Fellow', 'other' => 'Other clinician',
-	);
-	$k = strtolower(trim((string) $niveau));
-	return isset($map[$k]) ? $map[$k] : '';
+	$code = strtolower(trim((string) $niveau));
+	$levels = getSupervisorLevels();
+	return isset($levels[$code]) ? $levels[$code]['label'] : '';
 }
 
 function xajaxFormat($string) {

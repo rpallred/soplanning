@@ -75,7 +75,7 @@ switch ($action) {
 	case 'set_level':
 		if ($resourceId !== '') {
 			$lvl = trim($_POST['niveau'] ?? '');
-			$allowed = array('leader', 'bhc3', 'bhc2', 'bhc1', 'fellow', 'other');
+			$allowed = array_keys(getSupervisorLevels());
 			$val = in_array($lvl, $allowed, true) ? val2sql($lvl) : 'NULL';
 			db_query("UPDATE planning_ressource SET niveau = $val WHERE ressource_id = " . val2sql($resourceId));
 			$_SESSION['message'] = 'traitementOK';

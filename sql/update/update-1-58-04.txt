@@ -1,0 +1,24 @@
+-- Site-configurable supervisor levels. Each site defines its own level names
+-- and capabilities (lead a group / cover individual / be assigned a trainee).
+-- Seeded with the HealthPoint BHC defaults; codes match planning_ressource.niveau
+-- so existing supervisors keep their level. New in 1.58.00.
+
+CREATE TABLE `planning_supervisor_level` (
+  `level_id` INT NOT NULL AUTO_INCREMENT,
+  `code` VARCHAR(20) COLLATE latin1_general_ci NOT NULL,
+  `label` VARCHAR(60) COLLATE latin1_general_ci NOT NULL,
+  `ordre` INT NOT NULL DEFAULT 0,
+  `lead_group` ENUM('oui','non') COLLATE latin1_general_ci NOT NULL DEFAULT 'oui',
+  `cover` ENUM('oui','non') COLLATE latin1_general_ci NOT NULL DEFAULT 'non',
+  `assignable` ENUM('oui','non') COLLATE latin1_general_ci NOT NULL DEFAULT 'non',
+  PRIMARY KEY (`level_id`),
+  UNIQUE KEY `uq_level_code` (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+INSERT INTO `planning_supervisor_level` (`code`,`label`,`ordre`,`lead_group`,`cover`,`assignable`) VALUES
+('bhc1','BHC I',1,'oui','non','non'),
+('bhc2','BHC II',2,'oui','oui','non'),
+('bhc3','BHC III (Principal)',3,'oui','oui','oui'),
+('leader','Leader / Director',4,'oui','oui','oui'),
+('fellow','Fellow',5,'oui','oui','non'),
+('other','Other clinician',6,'oui','oui','non');

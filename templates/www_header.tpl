@@ -262,6 +262,9 @@
 							<a href="{$BASE}/status" class="dropdown-item">
 								<i class="fa fa-tags fa-lg fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;{#menuStatus#}
 							</a>
+							<a href="{$BASE}/supervisor_levels" class="dropdown-item">
+								<i class="fa fa-user-md fa-lg fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;Supervisor Levels
+							</a>
 						{/if}
 						{if $smarty.const.CONFIG_SOPLANNING_OPTION_LIEUX == 1 && in_array("lieux_all", $user.tabDroits) }
 							<a href="{$BASE}/lieux" class="dropdown-item">

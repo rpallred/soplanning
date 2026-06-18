@@ -58,11 +58,9 @@ if ($selected !== '') {
 		$isBook = ((int) $r->exclusif === 1);
 	}
 }
-// Supervisor levels for the dropdown (value => label)
-$levels = array(
-	'leader' => 'Leader / Director', 'bhc3' => 'BHC III (Principal)',
-	'bhc2' => 'BHC II', 'bhc1' => 'BHC I', 'fellow' => 'Fellow', 'other' => 'Other clinician',
-);
+// Supervisor levels for the dropdown (value => label), from the configurable table
+$levels = array();
+foreach (getSupervisorLevels() as $code => $lvl) { $levels[$code] = $lvl['label']; }
 $smarty->assign('levels', $levels);
 $smarty->assign('niveau', $niveau);
 $smarty->assign('isBook', $isBook);
