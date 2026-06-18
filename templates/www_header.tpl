@@ -189,6 +189,9 @@
 						<a href="{$BASE}/supervision" class="dropdown-item">
 							<i class="fa fa-sitemap fa-lg fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;Manage Supervision
 						</a>
+						<a href="{$BASE}/group_supervision" class="dropdown-item">
+							<i class="fa fa-users fa-lg fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;Group Supervision
+						</a>
 						<div class="dropdown-divider"></div>
 						<a href="{$BASE}/checkout" class="dropdown-item">
 							<i class="fa fa-book fa-lg fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;Book Library

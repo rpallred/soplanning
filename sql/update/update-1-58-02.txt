@@ -1,0 +1,26 @@
+-- Group Supervision: a recurring session led by a supervisor (BHC I and up)
+-- that several trainees attend. New in 1.58.00.
+
+CREATE TABLE `planning_group_session` (
+  `group_id` INT NOT NULL AUTO_INCREMENT,
+  `libelle` VARCHAR(100) COLLATE latin1_general_ci NOT NULL,
+  `lead_ref` VARCHAR(20) COLLATE latin1_general_ci NOT NULL,
+  `jour_semaine` TINYINT NULL DEFAULT NULL,
+  `heure_debut` TIME NULL DEFAULT NULL,
+  `heure_fin` TIME NULL DEFAULT NULL,
+  `date_debut` DATE NULL DEFAULT NULL,
+  `date_fin` DATE NULL DEFAULT NULL,
+  `actif` ENUM('oui','non') COLLATE latin1_general_ci NOT NULL DEFAULT 'oui',
+  PRIMARY KEY (`group_id`),
+  KEY `idx_grp_lead` (`lead_ref`),
+  CONSTRAINT `fk_grp_lead` FOREIGN KEY (`lead_ref`) REFERENCES `planning_ressource` (`ressource_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+CREATE TABLE `planning_group_member` (
+  `group_id` INT NOT NULL,
+  `trainee_id` VARCHAR(20) COLLATE latin1_general_ci NOT NULL,
+  PRIMARY KEY (`group_id`,`trainee_id`),
+  KEY `idx_gm_trainee` (`trainee_id`),
+  CONSTRAINT `fk_gm_group` FOREIGN KEY (`group_id`) REFERENCES `planning_group_session` (`group_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_gm_trainee` FOREIGN KEY (`trainee_id`) REFERENCES `planning_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
