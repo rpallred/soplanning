@@ -199,7 +199,18 @@
 						<a href="{$BASE}/availability" class="dropdown-item">
 							<i class="fa fa-calendar-check-o fa-lg fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;Resource Availability
 						</a>
+						<a href="{$BASE}/request_queue" class="dropdown-item">
+							<i class="fa fa-inbox fa-lg fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;Booking Requests
+						</a>
 					</div>
+				</li>
+			{/if}
+			{if in_array("self_service", $user.tabDroits) && !in_array("parameters_all", $user.tabDroits)}
+				<li class="divider-vertical"></li>
+				<li class="nav-item">
+					<a class="nav-link" href="{$BASE}/request_booking" role="button">
+						<i class="fa fa-hand-paper-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Request a Book
+					</a>
 				</li>
 			{/if}
 			{if in_array("stats_users", $user.tabDroits) || in_array("stats_projects", $user.tabDroits) || in_array("audit_restore_own", $user.tabDroits) || in_array("stats_roi_projects", $user.tabDroits) || in_array("audit_restore", $user.tabDroits)}

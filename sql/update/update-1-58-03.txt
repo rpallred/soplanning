@@ -1,0 +1,22 @@
+-- Self-service booking requests + approval queue. A self-service user requests
+-- a book for a date range; an admin approves (creating a loan) or denies.
+-- New in 1.58.00.
+
+CREATE TABLE `planning_booking_request` (
+  `request_id` INT NOT NULL AUTO_INCREMENT,
+  `user_id` VARCHAR(20) COLLATE latin1_general_ci NOT NULL,
+  `resource_id` VARCHAR(20) COLLATE latin1_general_ci NOT NULL,
+  `date_debut` DATE NOT NULL,
+  `date_fin` DATE NULL DEFAULT NULL,
+  `note` VARCHAR(255) COLLATE latin1_general_ci NULL DEFAULT NULL,
+  `statut` ENUM('pending','approved','denied') COLLATE latin1_general_ci NOT NULL DEFAULT 'pending',
+  `created_at` DATETIME NULL DEFAULT NULL,
+  `decided_by` VARCHAR(20) COLLATE latin1_general_ci NULL DEFAULT NULL,
+  `decided_at` DATETIME NULL DEFAULT NULL,
+  `decision_note` VARCHAR(255) COLLATE latin1_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`request_id`),
+  KEY `idx_br_statut` (`statut`),
+  KEY `idx_br_user` (`user_id`),
+  CONSTRAINT `fk_br_user` FOREIGN KEY (`user_id`) REFERENCES `planning_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_br_resource` FOREIGN KEY (`resource_id`) REFERENCES `planning_ressource` (`ressource_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
