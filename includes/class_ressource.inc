@@ -16,6 +16,8 @@ class Ressource extends GObject
 		$this->fields['quota_max_jours'] = new GInteger('planning_ressource', 'quota_max_jours', 11, TRUE, NULL);
 		// Optional link to a login account (e.g. a supervisor who can self-serve).
 		$this->fields['user_id'] = new GString('planning_ressource', 'user_id', 20, TRUE, NULL);
+		// Supervisor level/status (drives capabilities); null for books.
+		$this->fields['niveau'] = new GString('planning_ressource', 'niveau', 20, TRUE, NULL);
 		$this->primaryKeys = array('ressource_id');
 
 		parent::__construct();

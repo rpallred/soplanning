@@ -16,8 +16,14 @@ $res = db_query("SELECT user_id, nom FROM planning_user WHERE cohort_id IS NOT N
 while ($t = db_fetch_array($res)) { $trainees[] = $t; }
 
 $supervisors = array();
-$res = db_query("SELECT ressource_id, nom FROM planning_ressource WHERE exclusif = 0 ORDER BY nom");
-while ($s = db_fetch_array($res)) { $supervisors[] = $s; }
+$res = db_query("SELECT ressource_id, nom, niveau FROM planning_ressource WHERE exclusif = 0 ORDER BY nom");
+while ($s = db_fetch_array($res)) {
+	$cap = supervisorCapabilities($s['niveau']);
+	$s['level_label'] = supervisorLevelLabel($s['niveau']);
+	$s['assignable'] = $cap['assignable'] ? 1 : 0;
+	$s['cover'] = $cap['cover'] ? 1 : 0;
+	$supervisors[] = $s;
+}
 $supName = array();
 foreach ($supervisors as $s) { $supName[$s['ressource_id']] = $s['nom']; }
 

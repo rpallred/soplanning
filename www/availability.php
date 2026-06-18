@@ -44,16 +44,28 @@ if ($selected !== '') {
 	}
 }
 
-// Limits + linked user account for this resource
+// Limits + linked user account + level for this resource
 $quotaMaxJours = '';
 $linkedUser = '';
+$niveau = '';
+$isBook = false;
 if ($selected !== '') {
 	$r = new Ressource();
 	if ($r->db_load(array('ressource_id', '=', $selected))) {
 		$quotaMaxJours = $r->quota_max_jours;
 		$linkedUser = $r->user_id;
+		$niveau = (string) $r->niveau;
+		$isBook = ((int) $r->exclusif === 1);
 	}
 }
+// Supervisor levels for the dropdown (value => label)
+$levels = array(
+	'leader' => 'Leader / Director', 'bhc3' => 'BHC III (Principal)',
+	'bhc2' => 'BHC II', 'bhc1' => 'BHC I', 'fellow' => 'Fellow', 'other' => 'Other clinician',
+);
+$smarty->assign('levels', $levels);
+$smarty->assign('niveau', $niveau);
+$smarty->assign('isBook', $isBook);
 $people = array();
 $res = db_query("SELECT user_id, nom FROM planning_user WHERE user_id NOT IN ('publicspl') ORDER BY nom");
 while ($p = db_fetch_array($res)) { $people[] = $p; }

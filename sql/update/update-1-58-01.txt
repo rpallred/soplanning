@@ -1,0 +1,3 @@
+-- Supervisor level/status (drives capabilities). Applies to supervisors
+-- (non-exclusive resources); null for books.
+ALTER TABLE `planning_ressource` ADD COLUMN `niveau` VARCHAR(20) COLLATE latin1_general_ci NULL DEFAULT NULL;

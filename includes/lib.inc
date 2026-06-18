@@ -4,6 +4,37 @@ function date_diff2($date1, $date2) {
     return round(($date2->format('U') - $date1->format('U')) / (60*60*24));
 }
 
+/**
+ * Capabilities implied by a supervisor's level/status.
+ * Levels: leader (Director/Faculty), bhc3 (Principal, 2yr post-license),
+ * bhc2 (licensed), bhc1 (unlicensed), fellow / other (ancillary).
+ *   - lead_group : may lead a group-supervision session
+ *   - cover      : may cover/provide individual supervision
+ *   - assignable : may be assigned as a trainee's principal supervisor
+ * Unknown/empty level => permissive (don't restrict supervisors with no level set).
+ */
+function supervisorCapabilities($niveau) {
+	switch (strtolower(trim((string) $niveau))) {
+		case 'leader':
+		case 'bhc3':   return array('lead_group' => true,  'cover' => true,  'assignable' => true);
+		case 'bhc2':   return array('lead_group' => true,  'cover' => true,  'assignable' => false);
+		case 'bhc1':   return array('lead_group' => true,  'cover' => false, 'assignable' => false);
+		case 'fellow':
+		case 'other':  return array('lead_group' => true,  'cover' => true,  'assignable' => false);
+		default:       return array('lead_group' => true,  'cover' => true,  'assignable' => true);
+	}
+}
+
+/** Human label for a supervisor level (for dropdowns / display). */
+function supervisorLevelLabel($niveau) {
+	$map = array(
+		'leader' => 'Leader / Director', 'bhc3' => 'BHC III (Principal)',
+		'bhc2' => 'BHC II', 'bhc1' => 'BHC I', 'fellow' => 'Fellow', 'other' => 'Other clinician',
+	);
+	$k = strtolower(trim((string) $niveau));
+	return isset($map[$k]) ? $map[$k] : '';
+}
+
 function xajaxFormat($string) {
 	return str_replace(array('"', "\r\n", "\n", "\'", "\\\\"), array('\"', "", "", "\\\'", "\\\\\\\\"), trim($string));
 }

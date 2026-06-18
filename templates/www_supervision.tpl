@@ -44,7 +44,7 @@
 					</select>&nbsp;
 					<select name="supervisor_ref" class="form-control" required>
 						<option value="">-- supervisor --</option>
-						{foreach item=s from=$supervisors}<option value="{$s.ressource_id|escape}">{$s.nom|xss_protect}</option>{/foreach}
+						{foreach item=s from=$supervisors}<option value="{$s.ressource_id|escape}">{$s.nom|xss_protect}{if $s.level_label} &mdash; {$s.level_label}{/if}</option>{/foreach}
 					</select>&nbsp;
 					from <input type="date" name="date_debut" class="form-control" required>&nbsp;
 					to <input type="date" name="date_fin" class="form-control">&nbsp;
@@ -87,7 +87,7 @@
 					</select>&nbsp;
 					<select name="covering_ref" class="form-control" required>
 						<option value="">-- covering supervisor --</option>
-						{foreach item=s from=$supervisors}<option value="{$s.ressource_id|escape}">{$s.nom|xss_protect}</option>{/foreach}
+						{foreach item=s from=$supervisors}<option value="{$s.ressource_id|escape}">{$s.nom|xss_protect}{if $s.level_label} &mdash; {$s.level_label}{/if}</option>{/foreach}
 					</select>&nbsp;
 					from <input type="date" name="date_debut" class="form-control" required>&nbsp;
 					to <input type="date" name="date_fin" class="form-control" required>&nbsp;

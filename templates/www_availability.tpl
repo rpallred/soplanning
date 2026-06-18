@@ -22,6 +22,22 @@
 					blackout ranges block it entirely.
 				</p>
 
+				{if !$isBook}
+				<h5>Supervisor level</h5>
+				<form method="POST" action="{$BASE}/process/availability_save" class="form-inline" style="margin-bottom:25px;">
+					<input type="hidden" name="crsf" value="{$smarty.session.CRSF}">
+					<input type="hidden" name="action" value="set_level">
+					<input type="hidden" name="resource_id" value="{$selected|escape}">
+					<label>Level / status:&nbsp;</label>
+					<select name="niveau" class="form-control">
+						<option value="">-- not set --</option>
+						{foreach key=val item=lab from=$levels}<option value="{$val|escape}" {if $val == $niveau}selected{/if}>{$lab|escape}</option>{/foreach}
+					</select>
+					&nbsp;<button type="submit" class="btn btn-primary">Save level</button>
+					<span class="text-muted">&nbsp;(BHC I: group only &middot; BHC II: + cover individual &middot; BHC III/Leader: + can be assigned a trainee)</span>
+				</form>
+				{/if}
+
 				<h5>Linked login account</h5>
 				<form method="POST" action="{$BASE}/process/availability_save" class="form-inline" style="margin-bottom:25px;">
 					<input type="hidden" name="crsf" value="{$smarty.session.CRSF}">
