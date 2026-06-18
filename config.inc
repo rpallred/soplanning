@@ -122,53 +122,37 @@ if(!isset($_SESSION['CRSF'])){
 	$_SESSION['CRSF'] = bin2hex(random_bytes(16));
 }
 
-// Pr�f�rence format date
-// on garde le format dd/mm/yyyy partout
-if (isset($_SESSION['preferences']['dateformat']) && 1 == 0)
-{
-	switch($_SESSION['preferences']['dateformat'])	{
-		case 'fr':
-			define ('CONFIG_DATE_LONG','d/m/Y');
-			define ('CONFIG_DATE_SHORT','d/m/y');	
-			define ('CONFIG_DATE_SHORT2','d/m');
-			define ('CONFIG_DATE_FIRST_DAY_MONTH','01/m/Y');		
-			define ('CONFIG_DATE_DATEPICKER','dd/mm/yyyy');
-			define ('CONFIG_DATE_FORMAT','fr');
-			break;
-		case 'us':
-			define ('CONFIG_DATE_LONG','m-d-Y');
-			define ('CONFIG_DATE_SHORT','m-d-y');		
-			define ('CONFIG_DATE_SHORT2','m-d');
-			define ('CONFIG_DATE_FIRST_DAY_MONTH','m-01-Y');		
-			define ('CONFIG_DATE_DATEPICKER','mm-dd-yyyy');
-			define ('CONFIG_DATE_FORMAT','us');
-			break;
-		case 'jp':
-			define ('CONFIG_DATE_LONG','Y-m-d');
-			define ('CONFIG_DATE_SHORT','y-m-d');		
-			define ('CONFIG_DATE_SHORT2','m-d');
-			define ('CONFIG_DATE_FIRST_DAY_MONTH','Y-m-01');		
-			define ('CONFIG_DATE_DATEPICKER','yyyy-mm-dd');
-			define ('CONFIG_DATE_FORMAT','jp');
-			break;
-		default	 :
-			$_SESSION['preferences']['dateformat']='fr';
-			define ('CONFIG_DATE_LONG','d/m/Y');
-			define ('CONFIG_DATE_SHORT','d/m/y');
-			define ('CONFIG_DATE_SHORT2','d/m');
-			define ('CONFIG_DATE_FIRST_DAY_MONTH','01/m/Y');	
-			define ('CONFIG_DATE_DATEPICKER','dd/mm/yyyy');
-			define ('CONFIG_DATE_FORMAT','fr');
-			break;
-	}
-}else {
-	$_SESSION['preferences']['dateformat']='fr';
-	define ('CONFIG_DATE_LONG','d/m/Y');
-	define ('CONFIG_DATE_SHORT','d/m/y');
-	define ('CONFIG_DATE_SHORT2','d/m');
-	define ('CONFIG_DATE_FIRST_DAY_MONTH','01/m/Y');	
-	define ('CONFIG_DATE_DATEPICKER','dd/mm/yyyy');
-	define ('CONFIG_DATE_FORMAT','fr');	
+// Date format preference, driven by the PLANNING_DATE_FORMAT setting:
+//   1 = European (DD/MM/YYYY), 2 = US (MM/DD/YYYY), 3 = ISO (YYYY-MM-DD, default).
+// CONFIG_DATE_FORMAT keeps the legacy codes fr/us/jp because the date parse/
+// format helpers in lib.inc switch on those values ('jp' == ISO).
+$dateFormatPref = defined('CONFIG_PLANNING_DATE_FORMAT') ? (string) CONFIG_PLANNING_DATE_FORMAT : '3';
+switch ($dateFormatPref) {
+	case '1': // European
+		define('CONFIG_DATE_LONG', 'd/m/Y');
+		define('CONFIG_DATE_SHORT', 'd/m/y');
+		define('CONFIG_DATE_SHORT2', 'd/m');
+		define('CONFIG_DATE_FIRST_DAY_MONTH', '01/m/Y');
+		define('CONFIG_DATE_DATEPICKER', 'dd/mm/yyyy');
+		define('CONFIG_DATE_FORMAT', 'fr');
+		break;
+	case '2': // US
+		define('CONFIG_DATE_LONG', 'm/d/Y');
+		define('CONFIG_DATE_SHORT', 'm/d/y');
+		define('CONFIG_DATE_SHORT2', 'm/d');
+		define('CONFIG_DATE_FIRST_DAY_MONTH', 'm/01/Y');
+		define('CONFIG_DATE_DATEPICKER', 'mm/dd/yyyy');
+		define('CONFIG_DATE_FORMAT', 'us');
+		break;
+	case '3': // ISO (default)
+	default:
+		define('CONFIG_DATE_LONG', 'Y-m-d');
+		define('CONFIG_DATE_SHORT', 'y-m-d');
+		define('CONFIG_DATE_SHORT2', 'm-d');
+		define('CONFIG_DATE_FIRST_DAY_MONTH', 'Y-m-01');
+		define('CONFIG_DATE_DATEPICKER', 'yyyy-mm-dd');
+		define('CONFIG_DATE_FORMAT', 'jp');
+		break;
 }
 	
 // Mobile Detection

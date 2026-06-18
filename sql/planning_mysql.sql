@@ -35,7 +35,7 @@ INSERT INTO `planning_config` VALUES('DEFAULT_NB_DAYS_DISPLAYED', '2', 'Default 
 INSERT INTO `planning_config` VALUES('SOPLANNING_OPTION_LIEUX', '1', 'Location Option');
 INSERT INTO `planning_config` VALUES('SOPLANNING_OPTION_RESSOURCES', '1', 'Ressource Option');
 INSERT INTO `planning_config` VALUES('SOPLANNING_OPTION_TACHES', '1', 'Task Option');
-INSERT INTO `planning_config` VALUES('PLANNING_DATE_FORMAT', '1', 'Date Format');
+INSERT INTO `planning_config` VALUES('PLANNING_DATE_FORMAT', '3', 'Date Format');
 INSERT INTO `planning_config` VALUES('SOPLANNING_OPTION_ACCES', '0', 'Public access');
 INSERT INTO `planning_config` VALUES('SOPLANNING_LOGO', '', 'Logo');
 INSERT INTO `planning_config` VALUES('SOPLANNING_THEME', 'soplanning.css', 'Default theme');

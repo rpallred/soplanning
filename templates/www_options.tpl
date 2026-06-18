@@ -362,7 +362,16 @@
 										<div title="{#options_aide_dureeDefaut#}" class="cursor-help tooltipster">&nbsp;<i class="fa fa-question-circle" aria-hidden="true"></i></div>
 									</div>
 								</div>
-								<input type="hidden" name="PLANNING_DATE_FORMAT" value="1"/>
+								<div class="form-group row col-md-12 align-items-center">
+									<label class="col-md-4 col-form-label">{#options_dateFormat#} :</label>
+									<div class="col-md-4">
+										<select name="PLANNING_DATE_FORMAT" class="form-control">
+											<option value="3" {if $smarty.const.CONFIG_PLANNING_DATE_FORMAT == 3}selected{/if}>ISO &mdash; YYYY-MM-DD (2026-06-17)</option>
+											<option value="1" {if $smarty.const.CONFIG_PLANNING_DATE_FORMAT == 1}selected{/if}>European &mdash; DD/MM/YYYY (17/06/2026)</option>
+											<option value="2" {if $smarty.const.CONFIG_PLANNING_DATE_FORMAT == 2}selected{/if}>US &mdash; MM/DD/YYYY (06/17/2026)</option>
+										</select>
+									</div>
+								</div>
 								<div class="form-group row col-md-12 align-items-center">
 									<label class="col-md-4 col-form-label">{#options_nbMoisDefaut#} :</label>
 									<div class="col-2">
