@@ -1,6 +1,10 @@
 		{* Smarty *}
  		<div class="navbar fixed-bottom navbar-light bg-white footer justify-content-center" id="footerbar">
 			<a target="_blank" href="https://allred.consulting">Allred Consulting</a>
+			<span class="noprint">&nbsp;&middot;&nbsp;</span>
+			<span class="text-muted">{$smarty.const.CONFIG_SOPLANNING_TITLE} v{$smarty.const.CONFIG_CURRENT_VERSION}</span>
+			<span class="noprint">&nbsp;&middot;&nbsp;</span>
+			<a target="_blank" href="{$BASE}/license">GPLv3</a>
 		</div>
 		<div class="modal" tabindex="-1" role="dialog" id="myModal">
 			<div class="modal-dialog modal-dialog-normal" role="document">
