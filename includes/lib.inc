@@ -65,6 +65,28 @@ function supervisorCapabilities($niveau) {
 	return array('lead_group' => true, 'cover' => true, 'assignable' => true);
 }
 
+/**
+ * Whether a completion record satisfies a requirement, by response type.
+ * Mirrors the per-cell logic in completions.php so stats agree with the matrix.
+ * @param array $req  a planning_requirement row (needs response_type, cible)
+ * @param array|null $comp  the planning_requirement_completion row, or null
+ */
+function requirementDone($req, $comp) {
+	if ($comp === null) { return false; }
+	switch ($req['response_type']) {
+		case 'bool': return ($comp['valeur'] === 'yes');
+		case 'date': return !empty($comp['valeur']);
+		case 'number':
+			$val = (isset($comp['valeur']) && $comp['valeur'] !== '') ? (int) $comp['valeur'] : null;
+			$target = !empty($req['cible']) ? (int) $req['cible'] : null;
+			if ($val === null) { return false; }
+			return $target ? ($val >= $target) : ($val > 0);
+		case 'link': return !empty($comp['valeur']);
+		case 'file': return !empty($comp['fichier']);
+	}
+	return false;
+}
+
 /** Human label for a supervisor level (for dropdowns / display). */
 function supervisorLevelLabel($niveau) {
 	$code = strtolower(trim((string) $niveau));

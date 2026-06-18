@@ -202,6 +202,10 @@
 						<a href="{$BASE}/request_queue" class="dropdown-item">
 							<i class="fa fa-inbox fa-lg fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;Booking Requests
 						</a>
+						<div class="dropdown-divider"></div>
+						<a href="{$BASE}/program_stats" class="dropdown-item">
+							<i class="fa fa-bar-chart fa-lg fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;Program Stats
+						</a>
 					</div>
 				</li>
 			{/if}
