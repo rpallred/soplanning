@@ -213,7 +213,7 @@
 					</a>
 				</li>
 			{/if}
-			{if in_array("stats_users", $user.tabDroits) || in_array("stats_projects", $user.tabDroits) || in_array("audit_restore_own", $user.tabDroits) || in_array("stats_roi_projects", $user.tabDroits) || in_array("audit_restore", $user.tabDroits)}
+			{if in_array("stats_users", $user.tabDroits) || in_array("stats_projects", $user.tabDroits) || in_array("audit_restore_own", $user.tabDroits) || in_array("audit_restore", $user.tabDroits)}
 				<li class="divider-vertical"></li>
 				<li class="nav-item dropdown">
 					<a class="nav-link" href="#" id="menuStats" role="button" {if $smarty.session.isMobileOrTablet==1}data-toggle="dropdown"{/if} aria-haspopup="true" data-target="#menuStatsToggle" aria-expanded="true">
@@ -230,11 +230,7 @@
 								<i class="fa fa-bar-chart fa-lg fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;{#droits_stats_projects#}
 							</a>
 						{/if}
-						{if in_array("stats_roi_projects", $user.tabDroits)}
-							<a href="{$BASE}/stats_roi_projects" class="dropdown-item">
-								<i class="fa fa-coins fa-lg fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;{#droits_stats_roi_projects#}
-							</a>
-						{/if}
+						{* ROI stats removed for the education program (was: stats_roi_projects) *}
 						{if $smarty.const.CONFIG_SOPLANNING_OPTION_AUDIT == 1 && in_array("audit_restore", $user.tabDroits) }
 							<div class="dropdown-divider"></div>
 							<a href="{$BASE}/audit"  class="dropdown-item">

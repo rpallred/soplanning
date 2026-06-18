@@ -302,10 +302,7 @@
 					<input class="form-check-input" type="checkbox" name="stats_projects" id="stats_projects" value="stats_projects" {if in_array("stats_projects", $user_form.tabDroits)}checked="checked"{/if}>
 					<label class="form-check-label" for="stats_projects">{#droits_stats_projects#}</label>
 				</div>
-				<div class="form-check form-check-inline">
-					<input class="form-check-input" type="checkbox" name="stats_roi_projects" id="stats_roi_projects" value="stats_roi_projects" {if in_array("stats_roi_projects", $user_form.tabDroits)}checked="checked"{/if}>
-					<label class="form-check-label" for="stats_roi_projects">{#droits_stats_roi_projects#}</label>
-				</div>
+				{* ROI right removed for the education program *}
 			</div>
 			{/if}
 			<div class="row">

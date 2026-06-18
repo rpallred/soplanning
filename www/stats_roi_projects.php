@@ -4,13 +4,19 @@ require('./base.inc');
 require(BASE .'/../config.inc');
 require(BASE .'/../includes/header.inc');
 
+// ROI stats were removed for the education program. Keep the route inert so old
+// links/bookmarks redirect cleanly instead of rendering financial reports.
+$_SESSION['erreur'] = 'droitsInsuffisants';
+header('Location: index');
+exit;
+
 if(!$user->checkDroit('stats_roi_projects')) {
 	$_SESSION['erreur'] = 'droitsInsuffisants';
 	header('Location: index');
 	exit;
 }
 
-// PARAMÈTRES
+// PARAMï¿½TRES
 $dateDebut = new DateTime();
 $pattern = '/^([1-9]|0[1-9]|1[0-9]|2[0-9]|3[01])\/([1-9]|0[1-9]|1[012])\/(19[0-9][0-9]|20[0-9][0-9])$/';
 
