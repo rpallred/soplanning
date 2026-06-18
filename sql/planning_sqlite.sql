@@ -299,7 +299,8 @@ CREATE INDEX `planning_user_idx_visible_planning` ON `planning_user` (`visible_p
 CREATE INDEX `planning_user_user_groupe_id` ON `planning_user` (`user_groupe_id`);
 
 -- default configuration
-INSERT INTO `planning_config` VALUES('CURRENT_VERSION', '1.57.00-hardened.1', 'Internal key for auto upgrade control');
+INSERT INTO `planning_config` VALUES('CURRENT_VERSION', '1.58.00', 'Internal schema key for auto upgrade control');
+INSERT INTO `planning_config` VALUES('PRODUCT_VERSION', '2026.1', 'User-facing product version (CalVer), shown on login/footer');
 INSERT INTO `planning_config` VALUES('PLANNING_PAGES', '1,5,10,20,50,100', 'rows per page in the planning');
 INSERT INTO `planning_config` VALUES('PROJECT_COLORS_POSSIBLE', '', 'color choice limitation for planner (empty for no limit). Exemple :#ff0000,#aa8811,#446622');
 INSERT INTO `planning_config` VALUES('DEFAULT_NB_MONTHS_DISPLAYED', '2', 'Default number of months displayed in the planning');
@@ -309,7 +310,7 @@ INSERT INTO `planning_config` VALUES('LOGOUT_REDIRECT', '', 'Optional redirect u
 INSERT INTO `planning_config` VALUES('DEFAULT_PERIOD_LINK', '', 'Default value for link in a period');
 INSERT INTO `planning_config` VALUES('PLANNING_ONE_ASSIGNMENT_MAX_PER_DAY', '0', 'Option to display only one assignment/task per cell/day in the planning (put "1" to activite this option)');
 INSERT INTO `planning_config` VALUES('PLANNING_LINE_HEIGHT', '', 'Default line height in the planning. If not specified, it fits the username height');
-INSERT INTO `planning_config` VALUES('SOPLANNING_TITLE', 'SOPlanning', 'Change the title of Soplanning for integration in extranet');
+INSERT INTO `planning_config` VALUES('SOPLANNING_TITLE', 'Allred Clinical Education Planner', 'Product title shown on login and navbar');
 INSERT INTO `planning_config` VALUES('SMTP_HOST', 'localhost', '');
 INSERT INTO `planning_config` VALUES('SMTP_PORT', '', '');
 INSERT INTO `planning_config` VALUES('SMTP_FROM', 'notification@yourdomain.com', '');
@@ -328,7 +329,7 @@ INSERT INTO `planning_config` VALUES('DEFAULT_NB_DAYS_DISPLAYED', '2', 'Default 
 INSERT INTO `planning_config` VALUES('SOPLANNING_OPTION_LIEUX', '1', 'Location Option');
 INSERT INTO `planning_config` VALUES('SOPLANNING_OPTION_RESSOURCES', '1', 'Ressource Option');
 INSERT INTO `planning_config` VALUES('SOPLANNING_OPTION_TACHES', '1', 'Task Option');
-INSERT INTO `planning_config` VALUES('PLANNING_DATE_FORMAT', '1', 'Date Format');
+INSERT INTO `planning_config` VALUES('PLANNING_DATE_FORMAT', '3', 'Date Format (1=European, 2=US, 3=ISO)');
 INSERT INTO `planning_config` VALUES('SOPLANNING_OPTION_ACCES', '0', 'Public access');
 INSERT INTO `planning_config` VALUES('SOPLANNING_LOGO', '', 'Logo');
 INSERT INTO `planning_config` VALUES('SOPLANNING_THEME', 'soplanning.css', 'Default theme');

@@ -44,9 +44,11 @@ if(defined('CONFIG_GOOGLE_OAUTH_ACTIVE') && CONFIG_GOOGLE_OAUTH_ACTIVE == 1){
 	$smarty->assign('google_auth_url', $google_client->getLink());
 }
 
-// header connecté non inclus sur la page de login, check de version ici
+// header connectï¿½ non inclus sur la page de login, check de version ici
 $version = new Version();
-$smarty->assign('infoVersion', $version->getVersion());
+// Show the user-facing product version (CalVer) on the login page; the schema
+// version from getVersion()/version.txt stays internal to the upgrade engine.
+$smarty->assign('infoVersion', defined('CONFIG_PRODUCT_VERSION') ? CONFIG_PRODUCT_VERSION : $version->getVersion());
 
 if(is_file(BASE . '/../alert.txt')) {
 	$alerte = file_get_contents(BASE . '/../alert.txt');

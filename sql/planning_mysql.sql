@@ -6,7 +6,8 @@ CREATE TABLE `planning_config` (
   PRIMARY KEY (`cle`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
-INSERT INTO `planning_config` VALUES('CURRENT_VERSION', '1.57.00-hardened.1', 'Internal key for auto upgrade control');
+INSERT INTO `planning_config` VALUES('CURRENT_VERSION', '1.58.00', 'Internal schema key for auto upgrade control');
+INSERT INTO `planning_config` VALUES('PRODUCT_VERSION', '2026.1', 'User-facing product version (CalVer), shown on login/footer');
 INSERT INTO `planning_config` VALUES('PLANNING_PAGES', '1,5,10,20,50,100', 'rows per page in the planning');
 INSERT INTO `planning_config` VALUES('PROJECT_COLORS_POSSIBLE', '', 'color choice limitation for planner (empty for no limit). Exemple :#ff0000,#aa8811,#446622');
 INSERT INTO `planning_config` VALUES('DEFAULT_NB_MONTHS_DISPLAYED', '2', 'Default number of months displayed in the planning');
@@ -16,7 +17,7 @@ INSERT INTO `planning_config` VALUES('LOGOUT_REDIRECT', '', 'Optional redirect u
 INSERT INTO `planning_config` VALUES('DEFAULT_PERIOD_LINK', '', 'Default value for link in a period');
 INSERT INTO `planning_config` VALUES('PLANNING_ONE_ASSIGNMENT_MAX_PER_DAY', '0', 'Option to display only one assignment/task per cell/day in the planning (put "1" to activite this option)');
 INSERT INTO `planning_config` VALUES('PLANNING_LINE_HEIGHT', '', 'Default line height in the planning. If not specified, it fits the username height');
-INSERT INTO `planning_config` VALUES('SOPLANNING_TITLE', 'SOPlanning', 'Change the title of Soplanning for integration in extranet');
+INSERT INTO `planning_config` VALUES('SOPLANNING_TITLE', 'Allred Clinical Education Planner', 'Product title shown on login and navbar');
 INSERT INTO `planning_config` VALUES('SMTP_HOST', 'localhost', '');
 INSERT INTO `planning_config` VALUES('SMTP_PORT', '', '');
 INSERT INTO `planning_config` VALUES('SMTP_FROM', 'notification@yourdomain.com', '');
