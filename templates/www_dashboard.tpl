@@ -1,7 +1,7 @@
 {* Smarty *}
 {include file="www_header.tpl"}
 
-<div class="container-fluid">
+<div class="container-fluid" style="margin-top:60px;">
 	<div class="row">
 		<div class="col-md-11 offset-md-1">
 			<div class="soplanning-box">
